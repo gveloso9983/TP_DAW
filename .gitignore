@@ -1,4 +1,3 @@
-users.json
-edu_recs/node_modules
-edu_recs/package.json
-edu_recs/package-lock.json
+ edu_recs/node_modules/
+ edu_recs/package-lock.json
+ users.json
