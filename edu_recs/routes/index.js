@@ -19,6 +19,19 @@ router.get('/user/:id', function(req, res) {
   ;
 });
 
+//Auth
+router.get('/protegida', verificaAutenticacao, function (req,res) {
+  res.render('protegida', {utilizador: req.user.id})
+})
+
+function verificaAutenticacao(req, res, next){
+  if(req.isAuthenticated()){
+  //req.isAuthenticated() will return true if user is logged in
+    next();
+  } else{
+  res.redirect("/users/login");}
+}
+
 router.get('/registar', function(req, res){
   res.render('register')
 })
@@ -30,7 +43,16 @@ router.post('/registar', function(req, res) {
   
   // Data insert
   User.registar(reqBody)
-    .then(data => res.render('register', {data:data, numero : req.body.numero, nome : req.body.nome ,curso: req.body.curso , password: req.body.password ,email : req.body.email}))
+    .then(data => res.render('register', 
+    {
+      data:data, 
+      numero : req.body.numero, 
+      nome : req.body.nome ,
+      curso: req.body.curso ,
+      username: req.body.username , 
+      password: req.body.password ,
+      email : req.body.email
+    }))
     .catch(err => res.render('error', {error: err}))
   ;
 });

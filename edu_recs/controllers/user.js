@@ -22,6 +22,7 @@ module.exports.registar = user => {
         numero : user.numero,
         nome : user.nome,
         curso : user.curso,
+        username: user.username,
         password: user.password,
         email : user.email
     })
