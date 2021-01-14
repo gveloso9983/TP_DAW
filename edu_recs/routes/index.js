@@ -1,11 +1,21 @@
 var express = require('express');
-//var passport = require("passport")
 var router = express.Router();
+
 
 var User = require('../controllers/user')
 
+//middleware require login
+var requireLogin = (req, res, next) =>{
+  if (!req.session.user_id){
+    //req.flash('error','You must be login first!')
+    return res.redirect('/login')
+  }
+  next();
+}
+
 /* GET home page. */
 router.get('/', function(req, res) {
+  console.log(res.locals.currentUserId)
   res.render('index');
 });
 
@@ -13,7 +23,7 @@ router.get('/login', (req,res)=>{
   res.render('login');
 })
 
-router.get('/users', (req,res)=>{
+router.get('/users', requireLogin, (req,res)=>{
   let users = User.list()
     .then(data => res.render('users', {users: data}, console.log(data)))
     .catch(err => res.render('error', {error: err}))
@@ -38,12 +48,19 @@ router.post('/login', async (req,res )=> {
   var reqBody = req.body
   const user = await User.login(reqBody)
   if (user){
+    res.locals.currentUserId = req.session.user_id;
+    req.session.user_id = user._id
     res.render('user', {user}, console.log(user))
   }else{
     res.render('login', {m: 'Incorect email or password'});
   }
 })
 
+router.get('/logout', (req,res)=>{
+  //req.session.user_id = null;
+  req.session.destroy();
+  res.redirect('/')
+})
 
 //Registar
 router.post('/register', function(req, res) {

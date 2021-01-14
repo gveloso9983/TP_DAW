@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose')
+const session = require('express-session')
+const flash = require('connect-flash');
 
 //Set up default mongoose connection
 const mongoDB = 'mongodb://127.0.0.1/TP_DAW';
@@ -32,6 +34,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({secret: 'notagoodsecret'}))
+app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
