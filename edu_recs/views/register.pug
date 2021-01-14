@@ -3,18 +3,18 @@ extends layout
 block content
     .w3-card-4
           header.w3-container.w3-teal
-            h3.w3-left Registo de Utilizador
+            h3.w3-left User Registration
     .w3-container   
-      form(method='POST', action='/registar')
+      form(method='POST', action='/register')
         #form-group
-          label Numero
-          input.form-control(name='numero', type='text')
+          label Number
+          input.form-control(name='number', type='text')
         #form-group
-          label Nome
-          input.form-control(name='nome', type='text')
+          label Name
+          input.form-control(name='name', type='text')
         #form-group
-          label Curso
-          input.form-control(name='curso', type='text')
+          label Course
+          input.form-control(name='course', type='text')
         #form-group
           label Password
           input.form-control(name='password', type='password')

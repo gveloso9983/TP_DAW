@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    h1 Users
+    .w3-container
+    for user in users
+        ul
+          li= user.number
+          li= user.name
+          li= user.course
+          li= user.email
+

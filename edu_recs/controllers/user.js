@@ -6,24 +6,31 @@ var User = require('../models/user')
 module.exports.list = () => {
     return User
         .find()
-        .sort({nome:1})
+        .sort({name:1})
         .exec()
 }
 
 module.exports.lookUp = id  => {
     return User
-        .findOne({numero: id})
+        .findOne({number: id})
         .exec()
 }
 
-module.exports.registar = user => {
+module.exports.register = user => {
     var newUser = new User
     ({
-        numero : user.numero,
-        nome : user.nome,
-        curso : user.curso,
+        number : user.number,
+        name : user.name,
+        course : user.course,
         password: user.password,
         email : user.email
     })
     return newUser.save()
+}
+
+module.exports.login = user => {
+    const {email, password} = user
+    return User
+        .findOne({ email: email, password: password })
+        .exec()
 }
