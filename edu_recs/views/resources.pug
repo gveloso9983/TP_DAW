@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    h1 Resources
+    a(class='button' href='/resource/new') Add new
+    .w3-container
+       ul.w3-ul.w3-border
+         for resource in resources
+            li.w3-teal.w3-bar
+             img(src="https://www.pngitem.com/pimgs/m/32-324405_book-logo-circle-png-transparent-png.png" class="w3-bar-item w3-circle" style="width:85px")
+             .w3-bar-item
+                span(class="w3-large")= resource.title
+                br
+                span= resource.type
+                br
+                span= resource.authorId
+                br
+                span= resource.creationDate
+             span.w3-bar-item.w3-button.w3-xlarge.w3-righ X
+             a(class='button' href='/resource/' + resource._id) Show more

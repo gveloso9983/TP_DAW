@@ -13,7 +13,7 @@ var requireLogin = (req, res, next) =>{
 }
 
 router.get('/', requireLogin, (req,res)=>{
-  let users = User.list()
+  User.list()
     .then(data => res.render('users', {users: data}, console.log(data)))
     .catch(err => res.render('error', {error: err}))
 })

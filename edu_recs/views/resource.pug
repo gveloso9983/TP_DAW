@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    .w3-card-4.w3-container
+          table.w3-table-all
+            tr 
+              th Title
+              th Type
+              th AuthorID
+              th Creation Date
+            tr
+                td= resource.title
+                td= resource.type
+                td= resource.authorId
+                td= resource.creationDate
+          a(class='button' href='/resource') Back
