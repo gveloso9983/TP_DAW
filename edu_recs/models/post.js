@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var commentSchema = require('./comment')
 
 var postSchema = new mongoose.Schema({
     content: {
@@ -10,7 +11,12 @@ var postSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    comments: [commentSchema]
+    comments: [commentSchema],
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'commentSchema'}
+    ],
 });
 
-module.exports = mongoose.model('post', postSchema)
+
+module.exports = Post = mongoose.model('post', postSchema)

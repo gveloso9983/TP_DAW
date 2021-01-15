@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var postSchema = require('./post')
 
 var resourceSchema = new mongoose.Schema({
     authorId: {
@@ -9,6 +10,7 @@ var resourceSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
+        lowercase: true,
         enum: ['book', 'article', 'application', 'report', 'studentWork', 'monographs']
     },
     title: {
@@ -26,8 +28,14 @@ var resourceSchema = new mongoose.Schema({
         default: Date.now
     },
     visibility: String,
-    hashtags: [String],
-    posts: [postSchema],
+    hashtags: {
+        type: [String],
+        lowercase: true,
+    },
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'postSchema'
+    }],
     likes: {
         type: [mongoose.Schema.Types.ObjectId]
     }
