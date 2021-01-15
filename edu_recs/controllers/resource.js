@@ -14,3 +14,15 @@ module.exports.lookUpById = id => {
         .findById(id)
         .exec()
 }
+
+module.exports.newResource = resource => {
+    var newResource = new Resource
+    ({
+        authorId: '5fff8db9c3f9de18a0d41c5b',
+        type: resource.type,
+        title: resource.title,
+        subtitle: resource.subtitle,
+        hashtags: resource.hashtags
+    })
+    return newResource.save()
+}

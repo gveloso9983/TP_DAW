@@ -3,13 +3,22 @@ var router = express.Router();
 
 var Resource = require('../controllers/resource')
 
+//middleware require login
+var requireLogin = (req, res, next) =>{
+    if (!req.session.user_id){
+      //req.flash('error','You must be login first!')
+      return res.redirect('/login')
+    }
+    next();
+  }  
+
 router.get('/', (req, res) => {
     Resource.list()
         .then(data => res.render('resources', { resources: data }, console.log(data)))
         .catch(err => res.render('error', { error: err }))
 })
 
-router.get('/new', (req,res)=>{
+router.get('/new', requireLogin, (req,res)=>{
     res.render('addResource');
 })
 
@@ -20,6 +29,15 @@ router.get('/:id', (req,res)=>{
         .catch().catch(err => res.render('error', { error: err }))
 })
 
+router.post('/', (req,res)=>{
+    var reqBody = req.body
+    console.log(reqBody)
 
+    //Data insert
+    Resource.newResource(reqBody)
+       .then(data => res.redirect(`/resource/${data._id}`))
+       .catch(err => res.render('error', {error: err}))
+     ;
+} )
 
 module.exports = router;

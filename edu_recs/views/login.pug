@@ -7,13 +7,15 @@ block content
     .w3-container   
       form(method='POST', action='/login')
         #form-group
-          label Email
-          input.form-control(name='email', type='email')
+          label.w3-text-teal 
+           b Email
+          input.w3-input.x3-border.w3-light-grey.form-control(name='email', type='email')
         #form-group
-          label Password
-          input.form-control(name='password', type='password')
+          label.w3-text-teal 
+           b Password
+          input.w3-input.x3-border.w3-light-grey.form-control(name='password', type='password')
         br
         if m != null
           .w3-panel.w3-yellow
             p= m
-        input.btn.btn-primary(type='submit', value='Login')
+        input.btn.w3-btn.w3-blue-grey(type='submit', value='Login')
