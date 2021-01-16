@@ -6,6 +6,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose')
 const session = require('express-session')
 const flash = require('connect-flash');
+const methodOverride = require('method-override')
 
 //Set up default mongoose connection
 const mongoDB = 'mongodb://127.0.0.1/TP_DAW';
@@ -37,6 +38,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: 'notagoodsecret'}))
 app.use(flash());
+app.use(methodOverride('_method'))
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);

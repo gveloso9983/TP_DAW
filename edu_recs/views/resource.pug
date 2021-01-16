@@ -5,12 +5,23 @@ block content
           table.w3-table-all
             tr 
               th Title
-              th Type
-              th AuthorID
-              th Creation Date
+              td= resource.title
+            tr 
+              th Subtitle
+              td= resource.subtitle
             tr
-                td= resource.title
-                td= resource.type
-                td= resource.authorId
-                td= resource.creationDate
-          a(class='button' href='/resource') Back
+              th Type
+              td= resource.type
+            tr 
+              th Hashtags
+              td= resource.hashtags
+            tr
+              th AuthorID
+              td= resource.authorId
+            tr
+              th Creation Date
+              td= resource.creationDate
+                
+          a.btn.w3-btn.w3-teal.w3-margin(class='button' href='/resource') <- Back 
+          a.btn.w3-btn.w3-teal.w3-margin(class='button' href='/resource/'+ resource._id +'/edit')  ! Edit 
+          a.btn.w3-btn.w3-teal.w3-margin(class='button' href='#')  X Delete

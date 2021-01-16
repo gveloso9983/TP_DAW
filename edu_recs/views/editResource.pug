@@ -1,0 +1,35 @@
+extends layout
+
+block content
+    .w3-container.w3-teal
+          header.w3-container.w3-teal
+            h2.w3-left Edit resource
+    .w3-container
+        a.btn.w3-btn.w3-teal.w3-margin(class='button' href='/resource/' + resource._id) X Cancel
+        form(method='POST', action='/resource/'+ resource._id + '?_method=PUT')
+         #form-group
+             label.w3-text-teal
+               b Title
+             input.w3-input.x3-border.w3-light-grey.form-control(name='title', type='text', value=resource.title)
+         #form-group
+              label.w3-text-teal 
+                  b Subtitle
+              input.w3-input.x3-border.w3-light-grey.form-control(name='subtitle', type='text', value=resource.subtitle)
+         #form-group
+              label.w3-text-teal 
+                   b Hashtags
+              input.w3-input.x3-border.w3-light-grey.form-control(name='hashtags', type='text', value=resource.hashtags)
+         #form-group
+          select.w3-select.form-control.input-lg(name='type')
+            option(value='' disabled selected) Resource Type
+            option(value='book') Book
+            option(value='article') Article
+            option(value='application') Application
+            option(value='report') Report
+            option(value='studentwork') Student Work
+            option(value='monographs') Monographs
+          br
+          if m != null
+              .w3-panel.w3-yellow
+                  p= m
+          input.btn.w3-btn.w3-blue-grey(type='submit', value='Change resource')

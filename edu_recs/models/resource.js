@@ -11,7 +11,7 @@ var resourceSchema = new mongoose.Schema({
         type: String,
         required: true,
         lowercase: true,
-        enum: ['book', 'article', 'application', 'report', 'studentWork', 'monographs']
+        enum: ['book', 'article', 'application', 'report', 'studentwork', 'monographs']
     },
     title: {
         type: String,

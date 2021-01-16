@@ -26,3 +26,9 @@ module.exports.newResource = resource => {
     })
     return newResource.save()
 }
+
+module.exports.findAndUpdate = (id,resource) => {
+    return Resource
+        .findByIdAndUpdate(id, resource, {runValidators: true, new: true})
+        .exec()
+}
