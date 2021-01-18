@@ -1,19 +1,30 @@
 extends layout
 
 block content
-    h1 Resources
-    a(class='button' href='/resource/new') Add new
-    .w3-container
-       ul.w3-ul.w3-border
+   .w3-container
+      .w3-bar.w3-light-grey
+         h1.w3-left.w3-margin Resources
+         a.w3-right.w3-margin(class='button' href='/resource/new') 
+           i.fa.fa-plus-circle.fa-3x
+         form.w3-margin(method='POST', action='/resource/category')
+            select(name='type')
+             - var selected = (category == 'all')  
+             option(value='all' selected = selected? '' : null) --------
+             for c in categories
+               - var selected = (category == c)
+               option(value=type, selected = selected? '' : null)= c
+            input(type='submit', value='Search')
+   .w3-container
          for resource in resources
-            li.w3-teal.w3-bar
-             img(src="https://www.pngitem.com/pimgs/m/32-324405_book-logo-circle-png-transparent-png.png" class="w3-bar-item w3-circle" style="width:85px")
-             .w3-bar-item
-                span(class="w3-large")= resource.title
-                br
-                span= resource.type
-                br
-                span= resource.authorId
-                br
-                span= resource.creationDate
-             a.w3-righ.w3-bar-item(class='button' href='/resource/' + resource._id) Show more
+            .card.mb-3
+               .row
+                  .col-2
+                     img(src="https://www.pngitem.com/pimgs/m/32-324405_book-logo-circle-png-transparent-png.png" class="w3-bar-item w3-circle" style="width:85px")
+                  .col-10
+                     .card-body
+                        h5.card-title= resource.title
+                        p.card-text= resource.subtitle
+                        p.card-text= type
+                        p.card-text.text-muted= resource.authorId
+                        p.card-text.text-muted= resource.creationDate
+                        a.btn.w3-teal(href='/resource/' + resource._id) Show more

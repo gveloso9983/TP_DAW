@@ -6,11 +6,11 @@ block content
             h2.w3-left Edit resource
     .w3-container
         a.btn.w3-btn.w3-teal.w3-margin(class='button' href='/resource/' + resource._id) X Cancel
-        form(method='POST', action='/resource/'+ resource._id + '?_method=PUT')
+        form(method='POST', action='/resource/'+ resource._id + '?_method=PUT' novalidate class='validated-form')
          #form-group
              label.w3-text-teal
                b Title
-             input.w3-input.x3-border.w3-light-grey.form-control(name='title', type='text', value=resource.title)
+             input.w3-input.x3-border.w3-light-grey.form-control(name='title', type='text', value=resource.title , required)
          #form-group
               label.w3-text-teal 
                   b Subtitle
@@ -20,16 +20,13 @@ block content
                    b Hashtags
               input.w3-input.x3-border.w3-light-grey.form-control(name='hashtags', type='text', value=resource.hashtags)
          #form-group
-          select.w3-select.form-control.input-lg(name='type')
-            option(value='' disabled selected) Resource Type
-            option(value='book') Book
-            option(value='article') Article
-            option(value='application') Application
-            option(value='report') Report
-            option(value='studentwork') Student Work
-            option(value='monographs') Monographs
+          select.w3-select.form-control.input-lg(name='type' required)
+             for c in categories
+              - var selected = (resource.type == c)
+              option(value=type, selected = selected? '' : null )= c
           br
           if m != null
               .w3-panel.w3-yellow
                   p= m
           input.btn.w3-btn.w3-blue-grey(type='submit', value='Change resource')
+

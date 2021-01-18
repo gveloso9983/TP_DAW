@@ -14,17 +14,26 @@ db.once('open', function () {
   console.log("Successful MongoDB connection ...")
 });
 
-  const g = new Resource({
-    authorId: '5fff8db9c3f9de18a0d41c5b',
-    type: 'article',
-    title: 'University of Minho'
-  })
-  
+const g = new Resource({
+  authorId: '5fff8db9c3f9de18a0d41c5b',
+  type: 'article',
+  title: 'University of Minho'
+})
+
+// to delete everything from database
+const seedDB = async() => {
+  await Resource.deleteMany({});
   g.save()
-    .then(r => {
-      console.log(r)
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  
+  .then(r => {
+    console.log(r)
+  })
+  .catch(e => {
+    console.log(e)
+  })
+
+}
+
+
+//seedDB().then(()=>{
+//  mongoose.connection.close();
+//})

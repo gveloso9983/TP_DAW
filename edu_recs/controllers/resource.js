@@ -32,3 +32,15 @@ module.exports.findAndUpdate = (id,resource) => {
         .findByIdAndUpdate(id, resource, {runValidators: true, new: true})
         .exec()
 }
+
+module.exports.delete = id =>{
+    return Resource
+        .findByIdAndDelete(id)
+        .exec()
+}
+
+module.exports.lookUpByCategory = category => {
+    return Resource
+        .find({type: category})
+        .exec()
+}

@@ -5,11 +5,11 @@ block content
           header.w3-container.w3-teal
             h2.w3-left Add new resource
     .w3-container
-      form(method='POST', action='/resource')
+      form(method='POST', action='/resource' novalidate class='validated-form')
         #form-group
           label.w3-text-teal
             b Title
-          input.w3-input.x3-border.w3-light-grey.form-control(name='title', type='text')
+          input.w3-input.x3-border.w3-light-grey.form-control(name='title', type='text' required)
         #form-group
           label.w3-text-teal 
             b Subtitle
@@ -19,14 +19,9 @@ block content
             b Hashtags
           input.w3-input.x3-border.w3-light-grey.form-control(name='hashtags', type='text')
         #form-group
-          select.w3-select.form-control.input-lg(name='type')
-            option(value='' disabled selected) Resource Type
-            option(value='book') Book
-            option(value='article') Article
-            option(value='application') Application
-            option(value='report') Report
-            option(value='studentwork') Student Work
-            option(value='monographs') Monographs
+          select.w3-select.form-control.input-lg(name='type' required)
+            for c in categories
+              option(value=type)= c
         br
         if m != null
           .w3-panel.w3-yellow

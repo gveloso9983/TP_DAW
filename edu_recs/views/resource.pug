@@ -21,7 +21,13 @@ block content
             tr
               th Creation Date
               td= resource.creationDate
-                
-          a.btn.w3-btn.w3-teal.w3-margin(class='button' href='/resource') <- Back 
-          a.btn.w3-btn.w3-teal.w3-margin(class='button' href='/resource/'+ resource._id +'/edit')  ! Edit 
-          a.btn.w3-btn.w3-teal.w3-margin(class='button' href='#')  X Delete
+          .row
+            .col-4
+                a.btn.w3-btn.w3-teal.w3-margin(class='button' href='/resource') 
+                  i.fa.fa-arrow-left  Back 
+            .col-4
+                a.btn.w3-btn.w3-teal.w3-margin(class='button' href='/resource/'+ resource._id +'/edit') 
+                  i.fa.fa-edit  Edit 
+            .col-4
+                form(method='POST', action='/resource/'+ resource._id +'?_method=DELETE')
+                  input.btn.w3-btn.w3-teal.w3-margin(type='submit', value='Delete resource')

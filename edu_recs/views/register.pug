@@ -3,23 +3,25 @@ extends layout
 block content
     .w3-card-4
           header.w3-container.w3-teal
-            h3.w3-left User Registration
+            h3.text-center User Registration
     .w3-container   
-      form(method='POST', action='/register')
-        #form-group
-          label Number
-          input.form-control(name='number', type='text')
-        #form-group
-          label Name
-          input.form-control(name='name', type='text')
-        #form-group
-          label Course
-          input.form-control(name='course', type='text')
-        #form-group
-          label Password
-          input.form-control(name='password', type='password')
-        #form-group
-          label Email
-          input.form-control(name='email', type='email')
-        br
-        input.btn.btn-primary(type='submit', value='Submit')
+      .row
+        .col-6.offset-3
+          form(method='POST', action='/register')
+            #form-group
+             label Number
+             input.form-control(name='number', type='text')
+            #form-group
+              label Name
+              input.form-control(name='name', type='text' required)
+            #form-group
+              label Course
+              input.form-control(name='course', type='text' required)
+            #form-group
+              label Password
+              input.form-control(name='password', type='password' required)
+            #form-group
+              label Email
+              input.form-control(name='email', type='email' required)
+            br
+            input.btn.btn-primary(type='submit', value='Submit')
