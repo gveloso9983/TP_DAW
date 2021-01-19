@@ -5,6 +5,7 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css")
     link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous")
+    link(rel='stylesheet', href='/stylesheets/stars.css')
   body.d-flex.flex-column.vh-100
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.sticky-top
       .container-fluid
@@ -15,11 +16,24 @@ html
         div(class="collapse navbar-collapse", id="myNavbar")
           .navbar-nav
             a.nav-link(href='/user') USERS
-            a.nav-link(href='/logout') LOGOUT
-            a.nav-link(href='/register') REGISTER
-            a.nav-link(href='/login') LOGIN
             a.nav-link(href='/resource') RESOURCES
+          .navbar-nav.ml-auto
+            if (!currentUser)
+              a.nav-link(href='/register') REGISTER
+              a.nav-link(href='/login') LOGIN
+            else
+              a.nav-link(href='/logout') LOGOUT 
     main.container
+      if (success && success.length > 0)
+        .alert.alert-success.alert-dismissible.fade.show(role='alert')
+          =success
+          button.w3-right(class='close' type='button' data-dismiss='alert' aria-label='Close')
+            span(aria-hidden='true') X
+      if (error && error.length > 0)
+        .alert.alert-danger.alert-dismissible.fade.show(role='alert')
+          =error
+          button.w3-right(class='close' type='button' data-dismiss='alert' aria-label='Close')
+            span(aria-hidden='true') X
       block content
     footer.footer.bg-dark.py-3.mt-auto
       .container

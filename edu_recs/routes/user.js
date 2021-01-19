@@ -12,7 +12,7 @@ var requireLogin = (req, res, next) =>{
   next();
 }
 
-router.get('/', requireLogin, (req,res)=>{
+router.get('/', (req,res)=>{
   User.list()
     .then(data => res.render('users', {users: data}, console.log(data)))
     .catch(err => res.render('error', {error: err}))

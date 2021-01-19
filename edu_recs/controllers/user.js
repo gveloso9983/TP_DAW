@@ -16,16 +16,21 @@ module.exports.lookUp = id  => {
         .exec()
 }
 
+module.exports.lookUpById = id  => {
+    return User
+        .findById(id)
+        .exec()
+}
+
 module.exports.register = user => {
     var newUser = new User
     ({
-        number : user.number,
+        username: user.username,
         name : user.name,
         course : user.course,
-        password: user.password,
         email : user.email
     })
-    return newUser.save()
+    return User.register(newUser,user.password)
 }
 
 module.exports.login = user => {

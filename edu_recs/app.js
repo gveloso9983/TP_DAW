@@ -3,10 +3,14 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const session = require('express-session')
 const flash = require('connect-flash');
-const methodOverride = require('method-override')
+const methodOverride = require('method-override');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const user = require('./models/user')
+//const Joi = require('joi');  // for validation to server site before mongo
 
 //Set up default mongoose connection
 const mongoDB = 'mongodb://127.0.0.1/TP_DAW';
@@ -23,26 +27,46 @@ db.once('open', function() {
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
-var resourceRouter = require('./routes/resource')
+var resourceRouter = require('./routes/resource');
 
 var app = express();
 
-// view engine setup
+  // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret: 'notagoodsecret'}))
+//to do not get deprecation warning
+app.use(session({
+  secret: 'notagoodsecret',
+  resave: false,
+  saveUninitialized: false,
+  cookie:{secure: false, maxAge: 60000}
+}))
 app.use(flash());
 app.use(methodOverride('_method'))
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(user.authenticate()))
+
+passport.serializeUser(user.serializeUser())
+passport.deserializeUser(user.deserializeUser())
+
+app.use((req,res,next)=>{
+  console.log(req.session.returnTo)
+  res.locals.currentUser = req.user;
+   res.locals.success = req.flash('success');
+   res.locals.error = req.flash('error');
+   next();
+ })
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/resource', resourceRouter)
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

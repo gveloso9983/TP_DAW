@@ -24,7 +24,10 @@ block content
                      .card-body
                         h5.card-title= resource.title
                         p.card-text= resource.subtitle
-                        p.card-text= type
-                        p.card-text.text-muted= resource.authorId
+                        p.card-text= resource.type
+                        p.card-text.text-muted Submited by 
+                           span= resource.user.username
+                           | - 
+                           span= resource.user.course
                         p.card-text.text-muted= resource.creationDate
                         a.btn.w3-teal(href='/resource/' + resource._id) Show more

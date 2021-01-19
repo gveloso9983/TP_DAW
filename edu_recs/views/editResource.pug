@@ -20,13 +20,15 @@ block content
                    b Hashtags
               input.w3-input.x3-border.w3-light-grey.form-control(name='hashtags', type='text', value=resource.hashtags)
          #form-group
-          select.w3-select.form-control.input-lg(name='type' required)
+            label.w3-text-teal 
+                b Type
+            select.w3-select.form-control.input-lg(name='type' required)
              for c in categories
               - var selected = (resource.type == c)
               option(value=type, selected = selected? '' : null )= c
-          br
-          if m != null
-              .w3-panel.w3-yellow
-                  p= m
-          input.btn.w3-btn.w3-blue-grey(type='submit', value='Change resource')
+         #form-group
+            label.w3-text-teal 
+                 b Date of creation
+            input.w3-input.x3-border.w3-light-grey.form-control(name='creationDate', type='date', value=resource.creationDate)
+         input.btn.w3-btn.w3-blue-grey(type='submit', value='Change resource')
 

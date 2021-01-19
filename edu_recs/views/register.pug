@@ -9,19 +9,19 @@ block content
         .col-6.offset-3
           form(method='POST', action='/register')
             #form-group
-             label Number
-             input.form-control(name='number', type='text')
-            #form-group
               label Name
               input.form-control(name='name', type='text' required)
             #form-group
               label Course
               input.form-control(name='course', type='text' required)
             #form-group
-              label Password
-              input.form-control(name='password', type='password' required)
-            #form-group
               label Email
               input.form-control(name='email', type='email' required)
+            #form-group
+             label Username
+             input.form-control(name='username', type='text')
+            #form-group
+              label Password
+              input.form-control(name='password', type='password' required)
             br
             input.btn.btn-primary(type='submit', value='Submit')

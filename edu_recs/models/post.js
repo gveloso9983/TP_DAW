@@ -1,22 +1,31 @@
 var mongoose = require('mongoose')
-var commentSchema = require('./comment')
+var comment = require('./comment')
 
 var postSchema = new mongoose.Schema({
     content: {
         type: String,
         required: true,
     },
-    authorId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
         required: true
     },
-    comments: [commentSchema],
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'commentSchema'}
+        ref: 'comment'}
     ],
+    resources:  [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'resource'}
+    ]
 });
 
+//mongo midleware for deleting
+postSchema.post('findByIdAndDelete', async function(post){
+    if(post.comments.length){
+        await comment.deleteMany({_id: {$in: post.comments}})
+    }
+})
 
 module.exports = Post = mongoose.model('post', postSchema)

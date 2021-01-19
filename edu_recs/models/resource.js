@@ -1,21 +1,21 @@
 var mongoose = require('mongoose')
-var postSchema = require('./post')
+var Post = require('./post')
 
 var resourceSchema = new mongoose.Schema({
-    authorId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'user',
         required: true
     },
     type: {
         type: String,
-        required: true,
+        required: [true,'Resource must have a type'],
         lowercase: true,
         enum: ['book', 'article', 'application', 'report', 'studentwork', 'monographs']
     },
     title: {
         type: String,
-        required: true,
+        required: [true,'Resource must have a title.'],
         maxlength: 20
     },
     subtitle: String,
@@ -34,11 +34,23 @@ var resourceSchema = new mongoose.Schema({
     },
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'postSchema'
+        ref: 'post'
     }],
     likes: {
-        type: [mongoose.Schema.Types.ObjectId]
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'user'
     }
 });
+
+//mongo midleware for deleting
+resourceSchema.post('findByIdAndDelete', async function(resource){
+    if(resource.posts.length){
+        await Post.deleteMany({
+            _id: {
+                $in: resource.posts
+            }
+        })
+    }
+})
 
 module.exports = mongoose.model('resource', resourceSchema)

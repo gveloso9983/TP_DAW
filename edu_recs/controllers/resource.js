@@ -6,24 +6,33 @@ var Resource = require('../models/resource')
 module.exports.list = () => {
     return Resource
         .find({})
+        .populate('user')
         .exec()
 }
 
 module.exports.lookUpById = id => {
     return Resource
         .findById(id)
+        .populate('user')
+        .populate({
+            path: 'posts',
+            populate: {
+                path: 'user'
+            }
+        })
         .exec()
 }
 
-module.exports.newResource = resource => {
+module.exports.newResource = (resource, user) => {
     var newResource = new Resource
     ({
-        authorId: '5fff8db9c3f9de18a0d41c5b',
         type: resource.type,
         title: resource.title,
         subtitle: resource.subtitle,
-        hashtags: resource.hashtags
+        hashtags: resource.hashtags,
+        creationDate: resource.creationDate
     })
+    newResource.user = user;
     return newResource.save()
 }
 
@@ -42,5 +51,12 @@ module.exports.delete = id =>{
 module.exports.lookUpByCategory = category => {
     return Resource
         .find({type: category})
+        .populate('user')
+        .exec()
+}
+
+module.exports.deletePostFromResource = (id, postId) =>{
+    return Resource
+        .findByIdAndUpdate(id, {$pull: {posts: postId}})
         .exec()
 }

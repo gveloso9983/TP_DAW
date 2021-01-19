@@ -19,11 +19,13 @@ block content
             b Hashtags
           input.w3-input.x3-border.w3-light-grey.form-control(name='hashtags', type='text')
         #form-group
+          label.w3-text-teal 
+            b Type
           select.w3-select.form-control.input-lg(name='type' required)
             for c in categories
               option(value=type)= c
-        br
-        if m != null
-          .w3-panel.w3-yellow
-            p= m
+        #form-group
+          label.w3-text-teal 
+            b Date of creation
+          input.w3-input.x3-border.w3-light-grey.form-control(name='creationDate', type='date')
         input.btn.w3-btn.w3-blue-grey(type='submit', value='Add resource')

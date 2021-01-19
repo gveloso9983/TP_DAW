@@ -1,21 +1,45 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router({ mergeParams: true});
 
 var Resource = require('../controllers/resource')
+const User = require('../controllers/user')
+const Post = require('../controllers/post')
+
 let categories = ['book', 'article', 'application', 'report', 'studentwork', 'monographs'];
 
 //middleware require login
 var requireLogin = (req, res, next) => {
-    if (!req.session.user_id) {
-        //req.flash('error','You must be login first!')
+    if (!req.isAuthenticated()) {
+        req.session.returnTo = req.originalUrl
+        req.flash('error','You must be login first!')
         return res.redirect('/login')
     }
     next();
 }
 
+var isAuthor = async (req,res,next) => {
+    const { id } = req.params;
+    const resource = await Resource.lookUpById(id)
+    if (!resource.user.equals(req.user._id)){
+        req.flash('error','You do not have permission to do that!')
+        res.redirect(`/resource/${id}`)
+    }
+    next();
+}
+
+var isPostAuthor = async (req,res,next) => {
+    const { id, postId } = req.params;
+    const post = await Post.lookUpById(postId)
+    if (!post.user.equals(req.user._id)){
+        req.flash('error','You do not have permission to do that!')
+        res.redirect(`/resource/${id}`)
+    }
+    next();
+}
+
+
 router.get('/', (req, res) => {
     Resource.list()
-        .then()
         .then(data => res.render('resources', { resources: data, categories, category: 'all' }, console.log(data)))
         .catch(err => res.render('error', { error: err }))
 })
@@ -27,24 +51,36 @@ router.get('/new', requireLogin, (req, res) => {
 router.get('/:id', (req, res) => {
     const { id } = req.params;
     Resource.lookUpById(id)
-        .then(data => res.render('resource', { resource: data }, console.log(data)))
-        .catch().catch(err => res.render('error', { error: err }))
+        .then(data => res.render('resource', { resource: data, id}, console.log(data)))
+        .catch(()=> {
+            req.flash('error','Cannot find that resource')
+            res.redirect('/resource')
+        })
+        //.catch(err => res.render('error', { error: err }))
 })
 
-router.get('/:id/edit', requireLogin, (req, res) => {
+router.get('/:id/edit', requireLogin, isAuthor, (req, res) => {
     const { id } = req.params;
     Resource.lookUpById(id)
         .then(data => res.render('editResource', { resource: data, categories }, console.log(data)))
-        .catch().catch(err => res.render('error', { error: err }))
+        .catch(err => res.render('error', { error: err }))
 })
 
-router.post('/', (req, res) => {
+router.post('/', requireLogin, async (req, res) => {
     var reqBody = req.body
     console.log(reqBody)
+    console.log(req.user)
+
+    //find user
+    const user = await User.lookUpById(req.user)
+    console.log(user)
 
     //Data insert
-    Resource.newResource(reqBody)
-        .then(data => res.redirect(`/resource/${data._id}`))
+    Resource.newResource(reqBody, user)
+        .then(data => {
+            req.flash('success', 'Successfully created a new resource')
+            res.redirect(`/resource/${data._id}`)
+        })
         .catch(err => res.render('error', { error: err }))
 })
 
@@ -56,17 +92,60 @@ router.post('/category', (req,res)=>{
      .catch(err => res.render('error', { error: err }))
 })
 
-router.delete('/:id', (req,res)=>{
+router.post('/:id/post', requireLogin, (req, res)=>{
     const { id } = req.params;
-    Resource.delete(id)
-        .then(() => res.redirect('/resource'))
+
+    User.lookUpById(req.user)
+        .then(user=>{
+            Post.newPost(req.body, user)
+                .then(post=>{
+                   Resource.lookUpById(id)
+                    .then(r=>{
+                        r.posts.push(post)
+                        post.resources.push(r)
+                        post.save()
+                        r.save()
+                            .then(()=>{
+                                req.flash('success', 'Successfully made a new post')
+                                res.redirect(`/resource/${id}`)
+                        })
+                    })
+                })
+        })
         .catch(err => res.render('error', { error: err }))
 })
 
-router.put('/:id', (req,res)=>{
+router.delete('/:id', requireLogin, isAuthor, (req,res)=>{
+    const { id } = req.params;
+    Resource.delete(id)
+        .then(() => {
+            req.flash('success', 'Successfully deleted resource')
+            res.redirect('/resource')
+        })
+        .catch(err => res.render('error', { error: err }))
+})
+
+router.delete('/:id/post/:postId', isPostAuthor, (req,res)=>{
+    const {id, postId} = req.params
+
+    Resource.deletePostFromResource(id, postId)
+        .then(()=>{
+            Post.delete(postId)
+                .then(()=> {
+                    req.flash('success', 'Successfully deleted post')
+                    res.redirect(`/resource/${id}`)
+            })
+        })
+        .catch(err => res.render('error', { error: err }))
+})
+
+router.put('/:id', requireLogin, isAuthor, (req,res)=>{
     const { id } = req.params;
     Resource.findAndUpdate(id, req.body)
-        .then(data => res.redirect(`/resource/${data._id}`))
+        .then(data => {
+            req.flash('success', 'Successfully updated resource')
+            res.redirect(`/resource/${data._id}`)
+        })
         .catch(err => res.render('error', { error: err }))
 })
 
