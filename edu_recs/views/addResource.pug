@@ -5,7 +5,7 @@ block content
           header.w3-container.w3-teal
             h2.w3-left Add new resource
     .w3-container
-      form(method='POST', action='/resource' novalidate class='validated-form')
+      form(method='POST', action='/resource' enctype="multipart/form-data" novalidate class='validated-form')
         #form-group
           label.w3-text-teal
             b Title
@@ -28,4 +28,9 @@ block content
           label.w3-text-teal 
             b Date of creation
           input.w3-input.x3-border.w3-light-grey.form-control(name='creationDate', type='date')
+        #form-group
+          label.w3-text-teal 
+            b File
+          input.w3-input.x3-border.w3-light-grey.form-control(name='file', type='file')
+          br
         input.btn.w3-btn.w3-blue-grey(type='submit', value='Add resource')

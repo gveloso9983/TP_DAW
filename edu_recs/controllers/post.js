@@ -17,3 +17,9 @@ module.exports.delete = id =>{
         .findByIdAndDelete(id)
         .exec()
 }
+
+module.exports.lookUpById = id  => {
+    return Post
+        .findById(id)
+        .exec()
+}

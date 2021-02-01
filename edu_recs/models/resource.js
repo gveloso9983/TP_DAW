@@ -39,6 +39,11 @@ var resourceSchema = new mongoose.Schema({
     likes: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'user'
+    },
+    file:{
+        required: [true,'Resource must have a file'],
+        default: 'this is supposed to be a file path',
+        type: Buffer
     }
 });
 

@@ -30,7 +30,8 @@ module.exports.newResource = (resource, user) => {
         title: resource.title,
         subtitle: resource.subtitle,
         hashtags: resource.hashtags,
-        creationDate: resource.creationDate
+        creationDate: resource.creationDate,
+        file: resource.file
     })
     newResource.user = user;
     return newResource.save()
