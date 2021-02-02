@@ -1,12 +1,14 @@
 var express = require('express');
 var router = express.Router({ mergeParams: true});
+var fs = require('fs');
 //used for upload purposes
 var multer  = require('multer')
 ///
-
-var Resource = require('../controllers/resource')
+var uploadFolder = __dirname + '/../uploads/';
+const Resource = require('../controllers/resource')
 const User = require('../controllers/user')
-const Post = require('../controllers/post')
+const Post = require('../controllers/post');
+const e = require('express');
 
 let categories = ['book', 'article', 'application', 'report', 'studentwork', 'monographs'];
 
@@ -53,15 +55,18 @@ var upload = multer({
     limits:{
         fileSize:10000000,
     },
-    fileFilter(req, file, callback){
+    fileFilter(req, file, cb){
         console.log(file.originalname)
            if(!endsWithAny(['.TXT','.PNG','.JPG','.PDF','.txt','.png','.jpg','.pdf'], file.originalname)){
                 console.log('Nope')
-                callback(new Error('File Format is incorrect'));
+                cb(new Error('File Format is incorrect'));
            }
            else{
-                callback(undefined, true);
+                cb(undefined, true);
            }
+    },
+    filename(req, file, cb) {
+        cb(null, file.originalname)
     }
 })
 //
@@ -93,22 +98,37 @@ router.get('/:id/edit', requireLogin, isAuthor, (req, res) => {
         .catch(err => res.render('error', { error: err }))
 })
 
+router.get('/download/:filename', (req, res)=>{
+    // console.log( 'req : ')
+    // console.log( req)
+    try {
+        res.download(uploadFolder + req.params.filename);
+    }
+    catch(err){
+        console.log(err)
+        console.log(req.params)
+    }
+    
+})
+
 // router.post('/upload', upload.single('upload'), async(req, res)=>{
 //     res.send();
 // },(err, req, res, next) =>res.status(404).send({error:err.message}))
 
 router.post('/', requireLogin, upload.single('file'), async (req, res) => {
     var reqBody = req.body;
-    // console.log(JSON.stringify('reqBody : ' + reqBody))
+    var reqFile = req.file;
+    // var reqParams = req.params;
+    // console.log(JSON.stringify('reqParams : ' + reqParams.file))
     // console.log(JSON.stringify('req.user : ' + req.user))
     //find user
     const user = await User.lookUpById(req.user)
     console.log(user)
-    //file
-    var file = req.file;
     //Data insert
-    console.log(JSON.stringify('file : ' + file))
-    Resource.newResource(reqBody, user)
+    console.log(JSON.stringify('fileName : ' + reqFile.filename))
+    console.log(JSON.stringify('originalName : ' + reqFile.originalname))
+    console.log(JSON.stringify('reqFile : ' + reqFile.params))
+    Resource.newResource(reqBody,reqFile ,user)
         .then(data => {
             console.log('IM HERE ADDING A NEW RESOURCE')
             //res.send(file);

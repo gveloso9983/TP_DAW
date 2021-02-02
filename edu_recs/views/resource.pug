@@ -25,8 +25,11 @@ block content
               th(scope='row') Creation Date
               td= resource.creationDate
             tr
-              th(scope='row') File Name
+              th(scope='row') File Location
               td= resource.file
+            tr
+              th(scope='row') File Name
+              td= resource.filename
           .card-body
             a.btn.w3-btn.w3-teal.d-inline(class='button' href='/resource') 
                   i.fa.fa-arrow-left  Back 
@@ -68,3 +71,5 @@ block content
                 -if(currentUser && post.user._id.equals(currentUser._id))
                   form.w3-right(method='POST', action='/resource/'+ resource._id +'/post/'+ post._id +'?_method=DELETE')
                     input.btn.btn-danger.btn-sm(type='submit', value='Delete')
+  a.btn.w3-btn.w3-teal.d-inline(class='button' href='/resource/download/'+ resource.filename) 
+    i.fa.fa-download  Download    

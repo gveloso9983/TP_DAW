@@ -43,7 +43,10 @@ var resourceSchema = new mongoose.Schema({
     file:{
         required: [true,'Resource must have a file'],
         default: 'this is supposed to be a file path',
-        type: Buffer
+        type: String //it was set as [], try setting to String if in doubt
+    },
+    filename:{
+        type: String
     }
 });
 
