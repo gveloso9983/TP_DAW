@@ -7,22 +7,24 @@ html
     link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous")
     link(rel='stylesheet', href='/stylesheets/stars.css')
   body.d-flex.flex-column.vh-100
-    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.sticky-top
+    nav.navbar.navbar-expand.navbar-dark.bg-dark.sticky-top
       .container-fluid
         a.navbar-brand(href='/')
           i.fa.fa-home.fa-lg
-        button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar")
-          span.navbar-toggler-icon
-        div(class="collapse navbar-collapse", id="myNavbar")
-          .navbar-nav
+        div(class="navbar")
+          .navbar-nav.mr-auto
             a.nav-link(href='/user') USERS
             a.nav-link(href='/resource') RESOURCES
+        div(class="navbar")
           .navbar-nav.ml-auto
             if (!currentUser)
-              a.nav-link(href='/register') REGISTER
-              a.nav-link(href='/login') LOGIN
+              a.nav-link(href='/register') REGISTER 
+                i.fa.fa-user-plus 
+              a.nav-link.active(href='/login') LOGIN 
+                i.fa.fa-sign-in 
             else
               a.nav-link(href='/logout') LOGOUT 
+                i.fa.fa-sign-out
     main.container
       if (success && success.length > 0)
         .alert.alert-success.alert-dismissible.fade.show(role='alert')

@@ -39,7 +39,9 @@ var resourceSchema = new mongoose.Schema({
     likes: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'user'
-    }
+    },
+    rateCount: 0,
+    rateValue: 0
 });
 
 //mongo midleware for deleting
