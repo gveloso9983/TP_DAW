@@ -3,10 +3,22 @@ extends layout
 block content
   .row.mt-3
     .col-md-6
-      .w3-card-4.w3-container.mb-3.card
-        h4.w3-left.w3-text-teal= resource.title
+      .mb-3.card
+        .card-header
+          span
+            a.btn.w3-btn.w3-teal(class='button' href='/resource') 
+                  i.fa.fa-arrow-left  Back 
+          h2.w3-text-teal.d-inline-block.px-sm-3= resource.title.toUpperCase()
+          div.d-inline-block.ml-auto
+            -var avg =  resource.rateCount > 0 ? Math.round(resource.rateValue/resource.rateCount) : 0
+            -var avgFloat = resource.rateCount > 0 ? Math.round(resource.rateValue/resource.rateCount*10)/10 : 0
+            h3.text-warning.d-inline-block.pl-sm-5.pl-2= avgFloat
+            p.d-inline-block.px-3.my-0(class="starability-result" data-rating=`${avg}`)
+            h5.d-inline-block (
+                          =resource.rateCount 
+                          | )
         .card-body
-          table.table.table-striped.table-dark
+          table.table
             tr 
               th(scope='row') Subtitle
               td= resource.subtitle
@@ -14,8 +26,8 @@ block content
               th(scope='row') Type
               td= resource.type
             tr 
-              th(scope='row') Hashtags
-              td= resource.hashtags
+                th(scope='row') Hashtags
+                td= resource.hashtags
             tr
               th(scope='row') Author
               td= resource.user.username
@@ -31,15 +43,17 @@ block content
               th(scope='row') File Name
               td= resource.filename
           .card-body
-            a.btn.w3-btn.w3-teal.d-inline(class='button' href='/resource') 
-                  i.fa.fa-arrow-left  Back 
             -if(currentUser && resource.user._id.equals(currentUser._id))
                 a.btn.w3-btn.w3-teal.w3-margin.d-inline(class='button' href='/resource/'+ resource._id +'/edit') 
                   i.fa.fa-edit  Edit 
                 form.d-inline(method='POST', action='/resource/'+ resource._id +'?_method=DELETE')
                   input.btn.w3-btn.w3-teal.w3-margin(type='submit', value='Delete')
-                fieldset(class="starability-basic")
-                  legend.w3-text-teal.w3-left Rating:
+      -if(currentUser)
+        .w3-card-4.w3-container.mb-3
+          h4.w3-left.w3-text-teal Leave a rating
+          form(method='POST', action='/resource/'+ id +'/rating')
+            #form-group 
+              fieldset.d-inline-block(class="starability-basic")
                   input(type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating.")
                   input(type="radio" id="first-rate1" name="rating" value="1")
                   label(for="first-rate1" title="Terrible">1 star)
@@ -51,6 +65,7 @@ block content
                   label(for="first-rate4" title="Very good">4 stars)
                   input(type="radio" id="first-rate5" name="rating" value="5")
                   label(for="first-rate5" title="Amazing">5 stars)
+              input.btn.btn-success.mb-2(type='submit', value='Add rating')
     .col-md-6
       -if(currentUser)
         .w3-card-4.w3-container.mb-3
@@ -58,18 +73,33 @@ block content
           form(method='POST', action='/resource/'+ id +'/post' class='validated-form' novalidate)
             #form-group
               textarea.w3-input.x3-border.w3-light-grey.form-control(name='content', rows='2', type='text', value="content..." required)
-              input.btn.btn-success.mb-2(type='submit', value='Add new')
-      .w3-card-4.w3-container.mb-3
+              input.btn.btn-success.mb-2(type='submit', value='Add new post')
+      .card.w3-container.mb-3
         h4.w3-left.w3-text-teal Posts
+        br
         for post in resource.posts
-          table.w3-table-all.mb-1
-            tr 
-              td= post.content 
-                br
-                span.text-muted by 
-                               = post.user.username
+          .card.mb-3
+              .card-header
+                h6.card-title= post.user.username
+                p.card-text= post.content 
                 -if(currentUser && post.user._id.equals(currentUser._id))
                   form.w3-right(method='POST', action='/resource/'+ resource._id +'/post/'+ post._id +'?_method=DELETE')
                     input.btn.btn-danger.btn-sm(type='submit', value='Delete')
   a.btn.w3-btn.w3-teal.d-inline(class='button' href='/resource/download/'+ resource.filename) 
     i.fa.fa-download  Download    
+              .card-body.ml-3
+                -if(post.comments)
+                  ul.list-group.list-group-flush
+                    for comment in post.comments
+                      li.list-group-item
+                        strong=comment.user.username
+                        p.my-0.text-muted= comment.content
+                        -if(currentUser && comment.user._id.equals(currentUser._id))
+                          form.w3-right(method='POST', action='/resource/'+ resource._id +'/post/' + post._id + '/comment/'+ comment._id +'?_method=DELETE')
+                            input.btn.btn-danger.btn-sm(type='submit', value='X')
+                -if(currentUser)
+                    .w3-container
+                      form(method='POST', action='/resource/'+ resource._id +'/post/' + post._id + '/comment' class='validated-form' novalidate)
+                        #form-group
+                          textarea.w3-input.x3-border.w3-light-grey.form-control(name='content', rows='1', type='text', value="content..." required)
+                          input.btn.btn-success.btn-sm(type='submit', value='Add comment')

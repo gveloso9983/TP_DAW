@@ -17,9 +17,15 @@ module.exports.lookUpById = id => {
         .populate('user')
         .populate({
             path: 'posts',
-            populate: {
+            populate: [{
                 path: 'user'
-            }
+            },
+            {
+                path: 'comments',
+                populate: {
+                    path: 'user'
+                }
+            }]
         })
         .exec()
 }
@@ -44,13 +50,13 @@ module.exports.newResource = (resource, fileObj ,user) => {
     return newResource.save()
 }
 
-module.exports.findAndUpdate = (id,resource) => {
+module.exports.findAndUpdate = (id, resource) => {
     return Resource
-        .findByIdAndUpdate(id, resource, {runValidators: true, new: true})
+        .findByIdAndUpdate(id, resource, { runValidators: true, new: true })
         .exec()
 }
 
-module.exports.delete = id =>{
+module.exports.delete = id => {
     return Resource
         .findByIdAndDelete(id)
         .exec()
@@ -58,13 +64,19 @@ module.exports.delete = id =>{
 
 module.exports.lookUpByCategory = category => {
     return Resource
-        .find({type: category})
+        .find({ type: category })
         .populate('user')
         .exec()
 }
 
-module.exports.deletePostFromResource = (id, postId) =>{
+module.exports.deletePostFromResource = (id, postId) => {
     return Resource
-        .findByIdAndUpdate(id, {$pull: {posts: postId}})
+        .findByIdAndUpdate(id, { $pull: { posts: postId } })
         .exec()
+}
+
+module.exports.addRating = (id, rating) =>{
+    return Resource
+    .updateOne({"_id" : id}, {$inc : {'rateCount' : 1, 'rateValue' : rating}})
+    .exec()
 }

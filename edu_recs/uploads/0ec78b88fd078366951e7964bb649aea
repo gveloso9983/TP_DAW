@@ -1,0 +1,11 @@
+# Fazer cp do hr.json para container, ficheiro tem que estar na vm, fdf31d2748f8 substituir por id de container
+docker cp hr.json fdf31d2748f8:imports/
+
+# Se não tiver pasta imports
+docker cp hr.json fdf31d2748f8:/
+
+# Entrar na bash do container
+docker exec -it <id-container-mongo> bash
+mongo
+
+mongoimport --db hr --collection humanresources --drop --file hr.json

@@ -47,7 +47,9 @@ var resourceSchema = new mongoose.Schema({
     },
     filename:{
         type: String
-    }
+    },
+    rateCount: 0,
+    rateValue: 0
 });
 
 //mongo midleware for deleting

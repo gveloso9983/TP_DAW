@@ -18,8 +18,14 @@ module.exports.delete = id =>{
         .exec()
 }
 
-module.exports.lookUpById = id  => {
+module.exports.lookUpById = id => {
     return Post
         .findById(id)
+        .exec()
+}
+
+module.exports.deleteCommentFromPost = (id, commentId) => {
+    return Post
+        .findByIdAndUpdate(id, { $pull: { comments: commentId } })
         .exec()
 }
