@@ -43,7 +43,7 @@ module.exports.newResource = (resource, fileObj ,user) => {
         subtitle: resource.subtitle,
         hashtags: resource.hashtags,
         creationDate: resource.creationDate,
-        filepath:  fileObj.destination+ fileObj.filename,
+        filepath:  fileObj.destination + fileObj.filename,
         filename : fileObj.filename,
         originalname : fileObj.originalname
     })
