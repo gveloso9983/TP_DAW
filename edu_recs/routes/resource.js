@@ -3,13 +3,13 @@ var router = express.Router({ mergeParams: true});
 var fs = require('fs');
 //used for upload purposes
 var multer  = require('multer')
-///
+const crypto = require('crypto')
 var uploadFolder = __dirname + '/../uploads/';
+///
 const Resource = require('../controllers/resource')
 const User = require('../controllers/user')
 const Post = require('../controllers/post');
 const e = require('express');
-
 const Comment = require('../controllers/comment')
 
 let categories = ['book', 'article', 'application', 'report', 'studentwork', 'monographs'];
@@ -58,7 +58,7 @@ var upload = multer({
     limits:{
         fileSize:10000000,
     },
-    fileFilter(req, file, cb){
+    fileFilter: (req, file, cb) => {
         console.log(file.originalname)
            if(!endsWithAny(['.TXT','.PNG','.JPG','.PDF','.txt','.png','.jpg','.pdf'], file.originalname)){
                 console.log('Nope')
@@ -68,9 +68,12 @@ var upload = multer({
                 cb(undefined, true);
            }
     },
-    filename(req, file, cb) {
-        cb(null, file.originalname)
-    }
+    filename: (req, file, cb) => {
+        let customFileName = crypto.randomBytes(18).toString('hex'),
+        fileExtension = file.originalname.split('.')[1] // get file extension from original file name
+        cb(null, customFileName + '.' + fileExtension)
+    },
+
 })
 //
 router.get('/', (req, res) => {
@@ -105,7 +108,12 @@ router.get('/download/:filename', (req, res)=>{
     // console.log( 'req : ')
     // console.log( req)
     try {
-        res.download(uploadFolder + req.params.filename);
+        Resource.findRecord(req.params.filename)
+            .then(data =>{
+                let fileName = data.originalname,
+                    filePath = uploadFolder + req.params.filename
+                res.download(filePath, fileName);
+            })
     }
     catch(err){
         console.log(err)
@@ -131,7 +139,9 @@ router.post('/', requireLogin, upload.single('file'), async (req, res) => {
     console.log(JSON.stringify('fileName : ' + reqFile.filename))
     console.log(JSON.stringify('originalName : ' + reqFile.originalname))
     console.log(JSON.stringify('reqFile : ' + reqFile.params))
-    Resource.newResource(reqBody,reqFile ,user)
+    // var fileExtension = reqFile.originalname.split('.')[1];
+    // console.log('File extension: ' + fileExtension)
+    Resource.newResource(reqBody, reqFile, user)
         .then(data => {
             console.log('IM HERE ADDING A NEW RESOURCE')
             //res.send(file);

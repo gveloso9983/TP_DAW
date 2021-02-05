@@ -2,7 +2,7 @@
 var fs = require('fs');
 
 var Resource = require('../models/resource')
-var uploadFolder = __dirname + '/uploads/';
+//var uploadFolder = __dirname + '/uploads/';
 // Returns student list
 module.exports.list = () => {
     return Resource
@@ -43,8 +43,9 @@ module.exports.newResource = (resource, fileObj ,user) => {
         subtitle: resource.subtitle,
         hashtags: resource.hashtags,
         creationDate: resource.creationDate,
-        file:  fileObj.destination+ fileObj.filename,
-        filename : fileObj.filename
+        filepath:  fileObj.destination+ fileObj.filename,
+        filename : fileObj.filename,
+        originalname : fileObj.originalname
     })
     newResource.user = user;
     return newResource.save()
@@ -56,6 +57,11 @@ module.exports.findAndUpdate = (id, resource) => {
         .exec()
 }
 
+module.exports.findRecord = (filename) => {
+    return Resource
+        .findOne({filename : filename})
+        .exec()
+}
 module.exports.delete = id => {
     return Resource
         .findByIdAndDelete(id)

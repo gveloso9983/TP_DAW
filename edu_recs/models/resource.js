@@ -40,12 +40,15 @@ var resourceSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'user'
     },
-    file:{
+    filepath:{
         required: [true,'Resource must have a file'],
         default: 'this is supposed to be a file path',
         type: String //it was set as [], try setting to String if in doubt
     },
     filename:{
+        type: String
+    },
+    originalname:{
         type: String
     },
     rateCount: 0,
