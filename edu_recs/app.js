@@ -13,6 +13,7 @@ const user = require('./models/user')
 var User = require('./models/user')
 const config = require('./config')
 const FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 //const Joi = require('joi');  // for validation to server site before mongo
 
 //Set up default mongoose connection
@@ -70,7 +71,7 @@ function(accessToken, refreshToken, profile, done) {
       if(user){
         return done(null, user);}
       else {
-        console.log("creatiiiinggg newww ...................")
+        console.log("..............creatiiiinggg newww user ...................")
         var newUser = new User();
         newUser.username = profile.displayName;
         newUser.name = profile.name.givenName + ' ' + profile.name.familyName;
@@ -92,8 +93,40 @@ function(accessToken, refreshToken, profile, done) {
 }
 ));
 
-// passport.serializeUser(user.serializeUser())
-// passport.deserializeUser(user.deserializeUser())
+
+// passport.use(new GoogleStrategy({
+//   clientID: configAuth.googleAuth.clientID,
+//   clientSecret: configAuth.googleAuth.clientSecret,
+//   callbackURL: configAuth.googleAuth.callbackURL
+// },
+// function(accessToken, refreshToken, profile, done) {
+//     process.nextTick(function(){
+//       User.findOne({'googleId': profile.id}, function(err, user){
+//         if(err)
+//           return done(err);
+//         if(user)
+//           return done(null, user);
+//         else {
+//           var newUser = new User();
+
+//           newUser.username = profile.displayName;
+//           newUser.name = profile.displayName;
+//           newUser.email = profile.emails[0].value;
+//           newUser.googleId = profile.id;
+
+//           newUser.save(function(err){
+//             if(err)
+//               throw err;
+//             return done(null, newUser);
+//           })
+//           console.log(profile);
+//         }
+//       });
+//     });
+//   }
+
+// ));
+
 
 
 passport.serializeUser(function(user, done){
