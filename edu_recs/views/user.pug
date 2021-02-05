@@ -1,14 +1,28 @@
 extends layout
 
 block content
-    .w3-card-4
-      header.w3-container
-          table.w3-table-all
-            tr 
-              th Number
-              th Name
-              th Course
-            tr
-                td= user.number               
-                td= user.name             
-                td= user.course
+  nav.breadcrumb 
+    ol.breadcrumb 
+      li(class="breadcrumb-item")
+        a(href="/") Home
+      li(class="breadcrumb-item active" aria-current="page") My profile
+  .container.my-5
+    .row
+      .col-10.offset-1.col-md-6.offset-md-3.col-xl-4.offset-xl-4
+        .card.shadow
+          .card-body
+            h5.card-title My profile
+            table.table 
+              tr 
+                th(scope='row') Name
+                td= user.name
+              tr 
+                th(scope='row') Email
+                td= user.email
+              tr 
+                th(scope='row') Registration date
+                td= user.registrationDate
+              -if(user.course)
+                tr 
+                  th(scope='row') Course
+                  td= user.course

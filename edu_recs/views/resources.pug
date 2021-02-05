@@ -1,6 +1,11 @@
 extends layout
 
 block content
+   nav.breadcrumb 
+      ol.breadcrumb 
+         li(class="breadcrumb-item")
+            a(href="/") Home
+         li(class="breadcrumb-item active" aria-current="page") Resources
    .w3-container
       .w3-bar.w3-light-grey
          h1.w3-left.w3-margin Resources

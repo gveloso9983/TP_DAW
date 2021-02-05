@@ -1,6 +1,13 @@
 extends layout
 
 block content
+    nav.breadcrumb 
+      ol.breadcrumb 
+        li(class="breadcrumb-item")
+          a(href="/") Home
+        li(class="breadcrumb-item") 
+          a(href="/resource") Resources
+        li(class="breadcrumb-item active" aria-current="page") Add resource
     .w3-container.w3-teal
           header.w3-container.w3-teal
             h2.w3-left Add new resource

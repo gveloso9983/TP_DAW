@@ -77,6 +77,7 @@ function(accessToken, refreshToken, profile, done) {
         newUser.name = profile.name.givenName + ' ' + profile.name.familyName;
         newUser.email = profile.emails[0].value;
         newUser.facebookId = profile.id;
+        newUser.registrationDate = Date.now;
 
         newUser.save(function(err){
           if(err)
@@ -113,6 +114,7 @@ function(accessToken, refreshToken, profile, done) {
           newUser.name = profile.displayName;
           newUser.email = profile.emails[0].value;
           newUser.googleId = profile.id;
+          newUser.registrationDate = Date.now;
 
           newUser.save(function(err){
             if(err)
