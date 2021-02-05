@@ -5,8 +5,12 @@ block content
     .w3-container
     for user in users
         ul
-          li= user.username
-          li= user.name
-          li= user.course
-          li= user.email
+          li USERNAME
+            = user.username
+          li NAME
+            = user.name
+          li COURSE
+            = user.course
+          li email
+            = user.email
 

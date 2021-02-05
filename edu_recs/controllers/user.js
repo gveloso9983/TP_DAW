@@ -22,10 +22,10 @@ module.exports.lookUpById = id  => {
         .exec()
 }
 
-module.exports.register = user => {
+module.exports.register = (user) => {
     var newUser = new User
     ({
-        username: user.username,
+        username:  user.username,
         name : user.name,
         course : user.course,
         email : user.email
