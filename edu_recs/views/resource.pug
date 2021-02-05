@@ -2,7 +2,7 @@ extends layout
 
 block content
   .row.mt-3
-    .col-md-6
+    .col-lg-6
       .mb-3.card
         .card-header
           span
@@ -71,7 +71,7 @@ block content
                   input(type="radio" id="first-rate5" name="rating" value="5")
                   label(for="first-rate5" title="Amazing">5 stars)
               input.btn.btn-success.mb-2(type='submit', value='Add rating')
-    .col-md-6
+    .col-lg-6
       -if(currentUser)
         .w3-card-4.w3-container.mb-3
           h4.w3-left.w3-text-teal Add new post

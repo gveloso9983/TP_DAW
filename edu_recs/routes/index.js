@@ -12,19 +12,19 @@ function ensureAuthenticated(req, res, next) {
 }
 
 /* GET home page. */
-router.get('/', ensureAuthenticated,function(req, res) {
+router.get('/', ensureAuthenticated, function (req, res) {
   res.render('index');
 });
 
-router.get('/login', (req,res)=>{
-  res.render('login' );
+router.get('/login', (req, res) => {
+  res.render('login');
 })
 
-router.get('/register', function(req, res){
+router.get('/register', function (req, res) {
   res.render('register')
 })
 
-router.get('/logout', (req,res)=>{
+router.get('/logout', (req, res) => {
   //req.session.user_id = null;
   //req.session.destroy();
   req.logOut()
@@ -32,14 +32,25 @@ router.get('/logout', (req,res)=>{
   res.redirect('/')
 })
 
-router.get('/authenticate/facebook', passport.authenticate('facebook', {scope: ['email']}));
+router.get('/authenticate/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 
-router.get('/authenticate/facebook/callback', 
-	  passport.authenticate('facebook', { successRedirect: '/resource',
-	                                      failureRedirect: '/login' }));
+router.get('/authenticate/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+  }));
+
+router.get('/authenticate/google', passport.authenticate('google', { scope: ['profile','email'] }));
+
+router.get('/authenticate/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+  }));
 
 
-router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), (req,res )=> {
+
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
   //req.session.user_id = user._id
   req.flash('success', 'Welcome back!')
   const redirectUrl = req.session.returnTo || '/resource';
@@ -48,9 +59,9 @@ router.post('/login', passport.authenticate('local', {failureFlash: true, failur
 })
 
 //Registar
-router.post('/register', function(req, res) {
+router.post('/register', function (req, res) {
   var reqBody = req.body
-  
+
   // Data insert
   User.register(reqBody)
     .then(user => {
