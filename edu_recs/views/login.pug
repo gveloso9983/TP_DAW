@@ -1,6 +1,11 @@
 extends layout
 
 block content
+  nav.breadcrumb 
+    ol.breadcrumb 
+      li(class="breadcrumb-item")
+        a(href="/") Home
+      li(class="breadcrumb-item active" aria-current="page") Login
   .container.my-5
     .row
       .col-10.offset-1.col-md-6.offset-md-3.col-xl-4.offset-xl-4

@@ -1,6 +1,13 @@
 extends layout
 
 block content
+  nav.breadcrumb 
+    ol.breadcrumb 
+      li(class="breadcrumb-item")
+        a(href="/") Home
+      li(class="breadcrumb-item") 
+        a(href="/resource") Resources
+      li(class="breadcrumb-item active" aria-current="page")= resource.title
   .row.mt-3
     .col-lg-6
       .mb-3.card

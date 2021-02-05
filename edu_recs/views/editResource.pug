@@ -1,10 +1,17 @@
 extends layout
 
 block content
-    .w3-container.w3-teal
+     nav.breadcrumb 
+          ol.breadcrumb 
+               li(class="breadcrumb-item")
+                    a(href="/") Home
+               li(class="breadcrumb-item") 
+                    a(href="/resource") Resources
+               li(class="breadcrumb-item active" aria-current="page") Edit resource
+     .w3-container.w3-teal
           header.w3-container.w3-teal
             h2.w3-left Edit resource
-    .w3-container
+     .w3-container
         a.btn.w3-btn.w3-teal.w3-margin(class='button' href='/resource/' + resource._id) X Cancel
         form(method='POST', action='/resource/'+ resource._id + '?_method=PUT' novalidate class='validated-form')
          #form-group

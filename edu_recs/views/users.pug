@@ -1,6 +1,11 @@
 extends layout
 
 block content
+    nav.breadcrumb 
+      ol.breadcrumb 
+        li(class="breadcrumb-item")
+          a(href="/") Home
+        li(class="breadcrumb-item active" aria-current="page") Users
     h1 Users
     .w3-container
     for user in users

@@ -6,13 +6,19 @@ var User = require('../models/user')
 
 var User = require('../controllers/user')
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login')
+//middleware require login
+var requireLogin = (req, res, next) => {
+  if (!req.isAuthenticated()) {
+      if(req.method=="GET")
+          req.session.returnTo = req.originalUrl
+      req.flash('error', 'You must be login first!')
+      return res.redirect('/login')
+  }
+  next();
 }
 
 /* GET home page. */
-router.get('/', ensureAuthenticated, function (req, res) {
+router.get('/', function (req, res) {
   res.render('index');
 });
 
@@ -48,7 +54,12 @@ router.get('/authenticate/google/callback',
     failureRedirect: '/login'
   }));
 
-
+  router.get('/profile', requireLogin, (req, res) => {
+    //find user
+    User.lookUpById(req.user)
+        .then(user => res.render('user', { user }))
+        .catch(err => res.render('error', { error: err }))
+})
 
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
   //req.session.user_id = user._id
