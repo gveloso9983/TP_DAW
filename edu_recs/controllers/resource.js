@@ -1,7 +1,8 @@
 // Resource controller
+var fs = require('fs');
 
 var Resource = require('../models/resource')
-
+//var uploadFolder = __dirname + '/uploads/';
 // Returns student list
 module.exports.list = () => {
     return Resource
@@ -29,15 +30,23 @@ module.exports.lookUpById = id => {
         .exec()
 }
 
-module.exports.newResource = (resource, user) => {
+module.exports.getFilePathById = id =>{
+    return Resource
+        .fileName
+}
+
+module.exports.newResource = (resource, fileObj ,user) => {
     var newResource = new Resource
-        ({
-            type: resource.type,
-            title: resource.title,
-            subtitle: resource.subtitle,
-            hashtags: resource.hashtags,
-            creationDate: resource.creationDate
-        })
+    ({
+        type: resource.type,
+        title: resource.title,
+        subtitle: resource.subtitle,
+        hashtags: resource.hashtags,
+        creationDate: resource.creationDate,
+        filepath:  fileObj.destination + fileObj.filename,
+        filename : fileObj.filename,
+        originalname : fileObj.originalname
+    })
     newResource.user = user;
     return newResource.save()
 }
@@ -48,6 +57,11 @@ module.exports.findAndUpdate = (id, resource) => {
         .exec()
 }
 
+module.exports.findRecord = (filename) => {
+    return Resource
+        .findOne({filename : filename})
+        .exec()
+}
 module.exports.delete = id => {
     return Resource
         .findByIdAndDelete(id)

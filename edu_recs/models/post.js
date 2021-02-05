@@ -28,4 +28,4 @@ postSchema.post('findByIdAndDelete', async function(post){
     }
 })
 
-module.exports = Post = mongoose.model('post', postSchema)
+module.exports  = mongoose.model('post', postSchema)

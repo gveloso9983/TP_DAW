@@ -36,12 +36,23 @@ block content
             tr
               th(scope='row') Creation Date
               td= resource.creationDate
+            tr
+              th(scope='row') File Location
+              td= resource.filepath
+            tr
+              th(scope='row') File Name
+              td= resource.filename
+            tr
+              th(scope='row') Original Name
+              td= resource.originalname
           .card-body
             -if(currentUser && resource.user._id.equals(currentUser._id))
                 a.btn.w3-btn.w3-teal.w3-margin.d-inline(class='button' href='/resource/'+ resource._id +'/edit') 
                   i.fa.fa-edit  Edit 
                 form.d-inline(method='POST', action='/resource/'+ resource._id +'?_method=DELETE')
                   input.btn.w3-btn.w3-teal.w3-margin(type='submit', value='Delete')
+                a.btn.w3-btn.w3-teal.d-inline(class='button' href='/resource/download/'+ resource.filename) 
+                  i.fa.fa-download  Download    
       -if(currentUser)
         .w3-card-4.w3-container.mb-3
           h4.w3-left.w3-text-teal Leave a rating
