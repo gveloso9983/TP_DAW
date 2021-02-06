@@ -5,6 +5,8 @@ const passport = require('passport');
 var User = require('../models/user')
 
 var User = require('../controllers/user')
+var Resource = require('../controllers/resource')
+let categories = ['book', 'article', 'application', 'report', 'studentwork', 'monographs'];
 
 //middleware require login
 var requireLogin = (req, res, next) => {
@@ -38,9 +40,11 @@ router.get('/user',verifyAdmin, function (req,res) {
 });
 
 /* GET home page. */
-router.get('/', function (req, res) {
-  res.render('index');
-});
+router.get('/', (req, res) => {
+  Resource.list()
+      .then(data => res.render('index', { resources: data, categories, category: 'all' }, console.log('Data: ' + data)))
+      .catch(err => res.render('error', { error: err }))
+})
 
 router.get('/login', (req, res) => {
   res.render('login');

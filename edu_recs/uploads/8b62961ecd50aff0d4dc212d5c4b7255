@@ -1,0 +1,18 @@
+To generate an admin there are a few steps you need to take:
+
+1) create a normal user using the following credentials:
+	name: JCR
+	course: MEI
+	email: admin@admin.uminho.com
+	username: admin
+	password: 123
+
+2) after generating the user you'll need to change the level of permission of the user.
+The following process shows you how:
+		
+	1) start mongo by opening a command line and write: mongo
+	2) write: show dbs  
+	3) write: use TP_DAW 
+	4) write: db.users.findOneAndUpdate({username:"admin"},[{$set: {level:"admin"}}],{upsert: false})
+	
+3) Re-Login again with the username and password and you are ready to go as an administrator.
