@@ -11,11 +11,31 @@ var requireLogin = (req, res, next) => {
   if (!req.isAuthenticated()) {
       if(req.method=="GET")
           req.session.returnTo = req.originalUrl
-      req.flash('error', 'You must be login first!')
+      req.flash('error', 'You must login first!')
       return res.redirect('/login')
   }
   next();
 }
+
+var verifyAdmin = (req, res, next) => {
+  if(req.isAuthenticated()){
+    if(req.user.level == "admin"){
+      next()
+    }else{
+      req.flash('error', "You don't have permission to enter this area!")
+      return res.redirect('/resource')
+    }
+  }else{
+    req.flash('error', 'You must login first!')
+      return res.redirect('/login')
+  }
+}
+
+router.get('/user',verifyAdmin, function (req,res) {
+  User.list()
+    .then(data => res.render('users', {users: data}, console.log(data)))
+    .catch(err => res.render('error', {error: err}))
+});
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -88,4 +108,17 @@ router.post('/register', function (req, res) {
       res.redirect('/register')
     })
 });
+
+// router.route("/register").post(function(req, res) {
+//   kennel.insertMany(
+//     [
+//       { name: "John Cena" },
+//       { course: "WWE" },
+//       { email: "great@great.com" },
+//       { level: "admin" },
+//       { username: "admin" },
+//       { password: "123" },
+//     ])
+//   })
+
 module.exports = router;

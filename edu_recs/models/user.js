@@ -17,7 +17,8 @@ var userSchema = new mongoose.Schema({
         default: Date.now
     },
     facebookId: String,
-    googleId: String
+    googleId: String,
+    level: String
 });
 
 // add into schema passport and username

@@ -14,6 +14,7 @@ var User = require('./models/user')
 const configAuth = require('./config')
 const FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
 //const Joi = require('joi');  // for validation to server site before mongo
 
 //Set up default mongoose connection
@@ -28,6 +29,29 @@ db.on('error', console.error.bind(console, 'MongoDB connection error...'));
 db.once('open', function () {
   console.log("Successful MongoDB connection ...")
 });
+
+
+// mongoose.connect(mongoDB,function(err,db){
+//   if(err){
+//     console.log("Unabel to connect to mongo server ERROR : " ,err);
+//   }else {
+//   var admin = {
+//     name: "Ronaldo",
+//     email: "ronaldo@gmail.com",
+//     course: "Futebol",
+//     level:"admin",
+//     username: "admin",
+//     password: "123"
+//     };
+//     db.collection('users').insert(admin,function (err, res){
+//       if (err) throw err;  
+//         console.log("1 record inserted");  
+//         db.close();
+//     });
+//   }
+// })
+
+
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
@@ -126,10 +150,7 @@ function(accessToken, refreshToken, profile, done) {
       });
     });
   }
-
 ));
-
-
 
 passport.serializeUser(function(user, done){
   done(null, user.id);
