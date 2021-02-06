@@ -6,18 +6,23 @@ block content
         li(class="breadcrumb-item")
           a(href="/") Home
         li(class="breadcrumb-item active" aria-current="page") Users
-    h1 Users
-    .w3-container
-    for user in users
-        ul
-          li Username - 
-            = user.username
-          li Name - 
-            = user.name
-          li Course - 
-            = user.course
-          li Email -   
-            = user.email
-          li Level - 
-            = user.level
+
+    .w3-bar.w3-teal
+      h1.w3-left.w3-margin Users
+
+    table.w3-table-all
+      tr 
+          th Username 
+          th Name 
+          th Course 
+          th Email 
+          th Level
+      for user in users
+          tr 
+            td= user.username 
+            td= user.name 
+            td= user.course 
+            td= user.email 
+            td= user.level
+
 
