@@ -109,16 +109,4 @@ router.post('/register', function (req, res) {
     })
 });
 
-// router.route("/register").post(function(req, res) {
-//   kennel.insertMany(
-//     [
-//       { name: "John Cena" },
-//       { course: "WWE" },
-//       { email: "great@great.com" },
-//       { level: "admin" },
-//       { username: "admin" },
-//       { password: "123" },
-//     ])
-//   })
-
 module.exports = router;

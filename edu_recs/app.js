@@ -30,29 +30,6 @@ db.once('open', function () {
   console.log("Successful MongoDB connection ...")
 });
 
-
-// mongoose.connect(mongoDB,function(err,db){
-//   if(err){
-//     console.log("Unabel to connect to mongo server ERROR : " ,err);
-//   }else {
-//   var admin = {
-//     name: "Ronaldo",
-//     email: "ronaldo@gmail.com",
-//     course: "Futebol",
-//     level:"admin",
-//     username: "admin",
-//     password: "123"
-//     };
-//     db.collection('users').insert(admin,function (err, res){
-//       if (err) throw err;  
-//         console.log("1 record inserted");  
-//         db.close();
-//     });
-//   }
-// })
-
-
-
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 var resourceRouter = require('./routes/resource');
@@ -112,9 +89,6 @@ function(accessToken, refreshToken, profile, done) {
       }
     });
   });
-  // User.findOrCreate({ profile }, function (err, user) {
-  //   return cb(err, user);
-  // });
 }
 ));
 
@@ -161,7 +135,6 @@ passport.deserializeUser(function(id, done){
     done(err, user);
   });
 });
-
 
 app.use((req, res, next) => {
   console.log(req.session.returnTo)
