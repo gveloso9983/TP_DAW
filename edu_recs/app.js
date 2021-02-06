@@ -12,6 +12,7 @@ const LocalStrategy = require('passport-local');
 const user = require('./models/user')
 var User = require('./models/user')
 const configAuth = require('./config')
+const pdfjs = require("pdfjs-dist")
 const FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
