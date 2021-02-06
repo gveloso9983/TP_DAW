@@ -28,7 +28,8 @@ module.exports.register = (user) => {
         username:  user.username,
         name : user.name,
         course : user.course,
-        email : user.email
+        email : user.email,
+        level: "user"
     })
     return User.register(newUser,user.password)
 }
