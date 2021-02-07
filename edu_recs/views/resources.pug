@@ -13,14 +13,16 @@ block content
            i.fa.fa-plus-circle.fa-3x
          form.w3-margin(method='POST', action='/resource/category')
             select(name='type')
-             - var selected = (category == 'all')  
+             - var selected = (category == 'all')
              option(value='all' selected = selected? '' : null) --------
              for c in categories
                - var selected = (category == c)
                option(value=type, selected = selected? '' : null)= c
             input(type='submit', value='Search')
-   .w3-container
+            input(type="text", id="tagCode", onkeyup="filterTag()" placeholder="Search for tags..")
+   .w3-container.ml
          for resource in resources
+
             .card.mb-3
                .row
                   .col-2
@@ -30,9 +32,20 @@ block content
                         h5.card-title= resource.title
                         p.card-text= resource.subtitle
                         p.card-text= resource.type
+                        p.card-text= resource.hashtags
                         p.card-text.text-muted Submited by 
                            span= resource.user.name
                            | - 
                            span= resource.user.course
                         p.card-text.text-muted= resource.creationDate
                         a.btn.w3-teal(href='/resource/' + resource._id) Show more
+            
+   script.
+      let tagSearch = document.getElementsByClassName('ml')[0].children;
+      function filterTag() { 
+         let name  = document.getElementById('tagCode').value.toUpperCase();
+         for(let i = 0; i<tagSearch.length ; i+=1){
+               if(tagSearch[i].children[0].children[1].children[0].children[3].innerText.toUpperCase().indexOf(name) > -1) tagSearch[i].style.display = ""
+               else tagSearch[i].style.display = "none"    
+            }
+      }
