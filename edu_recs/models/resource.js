@@ -1,6 +1,12 @@
 var mongoose = require('mongoose')
 var Post = require('./post')
 
+function getCurrentDateTime(){
+var moment = require("moment-timezone")
+var time = moment.tz('Europe/Lisbon').format("YYYY-MM_DDTHH:MM:ss")
+return new Date(time)
+}
+
 var resourceSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
