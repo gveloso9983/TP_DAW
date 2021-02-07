@@ -40,3 +40,9 @@ module.exports.login = user => {
         .findOne({ email: email, password: password })
         .exec()
 }
+
+module.exports.findAndUpdate = (id, profile) => {
+    return User
+        .findByIdAndUpdate(id, profile, { runValidators: true, new: true })
+        .exec()
+}
