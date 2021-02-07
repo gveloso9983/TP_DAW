@@ -11,7 +11,9 @@ block content
       .col-10.offset-1.col-md-6.offset-md-3.col-xl-4.offset-xl-4
         .card.shadow
           .card-body
-            h5.card-title My profile
+            h5.card-title.d-inline My profile
+            a.btn.w3-btn.w3-teal.w3-margin.d-inline(class='button' href='/user/'+ user._id +'/edit') 
+                  i.fa.fa-edit  Edit profile
             table.table 
               tr 
                 th(scope='row') Name
@@ -19,9 +21,10 @@ block content
               tr 
                 th(scope='row') Email
                 td= user.email
-              tr 
-                th(scope='row') Level
-                td= user.level
+              -if(user.level == "admin")
+                tr 
+                  th(scope='row') Level
+                  td= user.level
               tr 
                 th(scope='row') Registration date
                 td= user.registrationDate

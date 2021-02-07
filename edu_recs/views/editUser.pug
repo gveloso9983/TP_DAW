@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  nav.breadcrumb 
+    ol.breadcrumb 
+      li(class="breadcrumb-item")
+        a(href="/") Home
+      li(class="breadcrumb-item")
+        a(href="/user/"+ user._id) My profile
+      li(class="breadcrumb-item active" aria-current="page") Edit profie
+  .container.my-5
+    .row
+      .col-10.offset-1.col-md-8.offset-md-2.col-lg-6.offset-lg-3.col-xl-4.offset-xl-4
+        .card.shadow
+          img(src="https://images.unsplash.com/photo-1464865885825-be7cd16fad8d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1950&q=80" alt="login" class="card-img-top" style="height: 10rem;")
+          .card-body
+            h5.card-title Edit my profile
+            form(method='POST', action='/user/'+ user._id + '?_method=PUT')
+              #form-group
+                label Name
+                input.form-control(name='name', type='text' required autofocus value=user.name )
+              #form-group
+                label Course
+                input.form-control(name='course', type='text' required value=user.course)
+              #form-group
+                label Email
+                input.form-control(name='email', type='email' required value=user.email)
+              #form-group
+                label Username
+                input.form-control(name='username', type='text' value=user.username)
+              #form-group
+                label Password
+                input.form-control(name='password', type='password' required value=user.password)
+              br
+              input.btn.btn-success(type='submit', value='Save changes')

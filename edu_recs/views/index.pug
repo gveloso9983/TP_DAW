@@ -1,10 +1,6 @@
 extends layout
 
 block content
-   nav.breadcrumb 
-      ol.breadcrumb 
-         li(class="breadcrumb-item")
-            a(href="/") Home
    .w3-container
       .w3-bar.w3-light-grey
         h1.w3-left.w3-margin News
@@ -24,11 +20,4 @@ block content
                         = resource.subtitle + " on "
                         = resource.creationDate
                         br
-                        a.btn.w3-teal(href='/resource/' + resource._id) Show resource
-
-//- block content
-//-   nav.breadcrumb 
-//-     ol.breadcrumb 
-//-       li(class="breadcrumb-item active" aria-current="page") Home
-//-   h1= title
-//-   p Homepage
+                        a.btn.w3-teal(href='/resource/' + resource._id) Show submission
