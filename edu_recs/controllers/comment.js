@@ -1,7 +1,6 @@
 // Comment controller
 
 var Comment = require('../models/comment')
-var Resource = require('../controllers/resource')
 
 module.exports.newComment = (comment, user) => {
     var newComment = new Comment
@@ -16,4 +15,12 @@ module.exports.delete = id =>{
     return Comment
         .findByIdAndDelete(id)
         .exec()
+}
+
+module.exports.deleteAllFromUser = (userId) => {
+    return Comment.find({'user': userId}).exec((err,comments)=>{
+        comments.forEach((comment)=>{
+            Comment.findByIdAndDelete(comment._id).exec()
+        })
+    })
 }

@@ -9,7 +9,6 @@ var uploadFolder = __dirname + '/../uploads/';
 const Resource = require('../controllers/resource')
 const User = require('../controllers/user')
 const Post = require('../controllers/post');
-const e = require('express');
 const Comment = require('../controllers/comment')
 
 let categories = ['book', 'article', 'application', 'report', 'studentwork', 'monographs'];
