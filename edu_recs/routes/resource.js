@@ -78,7 +78,7 @@ var upload = multer({
 //
 router.get('/', (req, res) => {
     Resource.list()
-        .then(data => res.render('resources', { resources: data, categories, category: 'all' }, console.log('Data: ' + data)))
+        .then(data => res.render('resources', { resources: data.sort( (a,b) => b.creationDate - a.creationDate), categories, category: 'all' }, console.log('Data: ' + data)))
         .catch(err => res.render('error', { error: err }))
 })
 
