@@ -159,6 +159,14 @@ router.post('/category', (req, res) => {
         .catch(err => res.render('error', { error: err }))
 })
 
+router.post('/hashtags', (req, res) => {
+    const { tag } = req.body
+    if (tag == 'all') res.redirect('/resource')
+    Resource.lookUpByHashtag(tag)
+        .then(data => res.render('resources', { resources: data, categories, hashtags: tag }, console.log(data)))
+        .catch(err => res.render('error', { error: err }))
+})
+
 router.post('/:id/post', requireLogin, (req, res) => {
     const { id } = req.params;
 

@@ -75,6 +75,13 @@ module.exports.lookUpByCategory = category => {
         .exec()
 }
 
+module.exports.lookUpByHashtag = (hashtags) => {
+    return Resource
+        .find({ hastags: hashtags })
+        .populate('user')
+        .exec()
+}
+
 module.exports.deletePostFromResource = (id, postId) => {
     return Resource
         .findByIdAndUpdate(id, { $pull: { posts: postId } })
