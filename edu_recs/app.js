@@ -12,8 +12,10 @@ const LocalStrategy = require('passport-local');
 const user = require('./models/user')
 var User = require('./models/user')
 const configAuth = require('./config')
+const pdfjs = require("pdfjs-dist")
 const FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
 //const Joi = require('joi');  // for validation to server site before mongo
 
 //Set up default mongoose connection
@@ -88,9 +90,6 @@ function(accessToken, refreshToken, profile, done) {
       }
     });
   });
-  // User.findOrCreate({ profile }, function (err, user) {
-  //   return cb(err, user);
-  // });
 }
 ));
 
@@ -126,10 +125,7 @@ function(accessToken, refreshToken, profile, done) {
       });
     });
   }
-
 ));
-
-
 
 passport.serializeUser(function(user, done){
   done(null, user.id);
@@ -140,7 +136,6 @@ passport.deserializeUser(function(id, done){
     done(err, user);
   });
 });
-
 
 app.use((req, res, next) => {
   console.log(req.session.returnTo)

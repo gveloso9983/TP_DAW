@@ -16,7 +16,7 @@ var resourceSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true,'Resource must have a title.'],
-        maxlength: 20
+        maxlength: 150
     },
     subtitle: String,
     creationDate: {

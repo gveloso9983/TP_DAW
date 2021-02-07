@@ -1,8 +1,34 @@
 extends layout
 
 block content
-  nav.breadcrumb 
-    ol.breadcrumb 
-      li(class="breadcrumb-item active" aria-current="page") Home
-  h1= title
-  p Homepage
+   nav.breadcrumb 
+      ol.breadcrumb 
+         li(class="breadcrumb-item")
+            a(href="/") Home
+   .w3-container
+      .w3-bar.w3-light-grey
+        h1.w3-left.w3-margin News
+   .w3-container
+         for resource in resources
+            .card.mb-3
+               .row
+                  .col-1
+                  .col-11
+                     .card-body
+                        h5 New Submission: 
+                        strong= resource.user.name  
+                        |  created a new  
+                        = resource.type + " entitled "
+                        strong= resource.title  
+                        |  - 
+                        = resource.subtitle + " on "
+                        = resource.creationDate
+                        br
+                        a.btn.w3-teal(href='/resource/' + resource._id) Show resource
+
+//- block content
+//-   nav.breadcrumb 
+//-     ol.breadcrumb 
+//-       li(class="breadcrumb-item active" aria-current="page") Home
+//-   h1= title
+//-   p Homepage

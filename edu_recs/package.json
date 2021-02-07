@@ -28,6 +28,7 @@
     "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.1.0",
+    "pdfjs-dist": "^2.6.347",
     "pug": "2.0.0-beta11",
     "pug-bootstrap": "0.0.16",
     "query-string": "^6.13.8"

@@ -5,22 +5,46 @@ const passport = require('passport');
 var User = require('../models/user')
 
 var User = require('../controllers/user')
+var Resource = require('../controllers/resource')
+let categories = ['book', 'article', 'application', 'report', 'studentwork', 'monographs'];
 
 //middleware require login
 var requireLogin = (req, res, next) => {
   if (!req.isAuthenticated()) {
       if(req.method=="GET")
           req.session.returnTo = req.originalUrl
-      req.flash('error', 'You must be login first!')
+      req.flash('error', 'You must login first!')
       return res.redirect('/login')
   }
   next();
 }
 
-/* GET home page. */
-router.get('/', function (req, res) {
-  res.render('index');
+var verifyAdmin = (req, res, next) => {
+  if(req.isAuthenticated()){
+    if(req.user.level == "admin"){
+      next()
+    }else{
+      req.flash('error', "You don't have permission to enter this area!")
+      return res.redirect('/resource')
+    }
+  }else{
+    req.flash('error', 'You must login first!')
+      return res.redirect('/login')
+  }
+}
+
+router.get('/user',verifyAdmin, function (req,res) {
+  User.list()
+    .then(data => res.render('users', {users: data}, console.log(data)))
+    .catch(err => res.render('error', {error: err}))
 });
+
+/* GET home page. */
+router.get('/', (req, res) => {
+  Resource.list()
+      .then(data => res.render('index', { resources: data, categories, category: 'all' }, console.log('Data: ' + data)))
+      .catch(err => res.render('error', { error: err }))
+})
 
 router.get('/login', (req, res) => {
   res.render('login');
@@ -88,4 +112,5 @@ router.post('/register', function (req, res) {
       res.redirect('/register')
     })
 });
+
 module.exports = router;

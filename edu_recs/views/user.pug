@@ -20,6 +20,9 @@ block content
                 th(scope='row') Email
                 td= user.email
               tr 
+                th(scope='row') Level
+                td= user.level
+              tr 
                 th(scope='row') Registration date
                 td= user.registrationDate
               -if(user.course)
