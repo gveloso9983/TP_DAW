@@ -6,6 +6,13 @@ block content
          li(class="breadcrumb-item")
             a(href="/") Home
          li(class="breadcrumb-item active" aria-current="page") Resources
+   if (admin)
+      form.w3-margin(method='POST', action='/resource/category/new')
+         #form-group
+            label.w3-text-teal
+               b Category
+            input.w3-input.x3-border.w3-light-grey.form-control(name='category', type='text' required)
+         input.btn.w3-btn.w3-blue-grey(type='submit', value='Add new category')
    .w3-container
       .w3-bar.w3-light-grey
          h1.w3-left.w3-margin Resources

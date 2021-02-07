@@ -101,3 +101,7 @@ module.exports.deleteAllFromUser = (userId) => {
         })
     })
 }
+
+module.exports.allFromUser = (userId) => {
+    return Resource.find({'user': userId}).exec()
+}

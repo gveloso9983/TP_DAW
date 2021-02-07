@@ -10,8 +10,7 @@ var resourceSchema = new mongoose.Schema({
     type: {
         type: String,
         required: [true,'Resource must have a type'],
-        lowercase: true,
-        enum: ['book', 'article', 'application', 'report', 'studentwork', 'monographs']
+        lowercase: true
     },
     title: {
         type: String,

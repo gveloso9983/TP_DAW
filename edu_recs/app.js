@@ -10,7 +10,8 @@ const methodOverride = require('method-override');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const user = require('./models/user')
-var User = require('./models/user')
+var User = require('./models/user');
+const Category = require('./controllers/category');
 const configAuth = require('./config')
 const pdfjs = require("pdfjs-dist")
 const FacebookStrategy = require('passport-facebook').Strategy;
@@ -29,12 +30,13 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error...'));
 db.once('open', function () {
   console.log("Successful MongoDB connection ...")
-});
+ });
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 var resourceRouter = require('./routes/resource');
 const { TooManyRequests } = require('http-errors');
+
 
 var app = express();
 
@@ -140,6 +142,8 @@ passport.deserializeUser(function(id, done){
 app.use((req, res, next) => {
   console.log(req.session.returnTo)
   res.locals.currentUser = req.user;
+  if(req.user && req.user.level === 'admin')
+    res.locals.admin = true;
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();

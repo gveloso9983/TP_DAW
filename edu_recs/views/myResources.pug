@@ -1,0 +1,26 @@
+extends layout
+
+block content
+   nav.breadcrumb 
+      ol.breadcrumb 
+         li(class="breadcrumb-item")
+            a(href="/") Home
+         li(class="breadcrumb-item active" aria-current="page") My resources
+   .w3-container
+      .w3-bar.w3-light-grey
+         h1.w3-left.w3-margin My resources
+   .w3-container.ml
+         for resource in resources
+
+            .card.mb-3
+               .row
+                  .col-2
+                     img(src="https://www.pngitem.com/pimgs/m/32-324405_book-logo-circle-png-transparent-png.png" class="w3-bar-item w3-circle" style="width:85px")
+                  .col-10
+                     .card-body
+                        h5.card-title= resource.title
+                        p.card-text= resource.subtitle
+                        p.card-text= resource.type
+                        p.card-text= resource.hashtags
+                        p.card-text.text-muted= resource.creationDate
+                        a.btn.w3-teal(href='/resource/' + resource._id) Go to resource
