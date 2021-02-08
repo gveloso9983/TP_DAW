@@ -13,7 +13,9 @@ block content
           .card-body
             h5.card-title.d-inline My profile
             a.btn.w3-btn.w3-teal.w3-margin.d-inline(class='button' href='/user/'+ user._id +'/edit') 
-                  i.fa.fa-edit  Edit profile
+                  i.fa.fa-edit  Edit profil
+            form.d-inline(method='POST', action='/user/'+ user._id +'?_method=DELETE')
+                  input.btn.w3-btn.w3-teal(type='submit', value='Delete profil')
             table.table 
               tr 
                 th(scope='row') Name

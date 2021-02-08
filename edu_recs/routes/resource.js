@@ -1,23 +1,23 @@
 var express = require('express');
-var router = express.Router({ mergeParams: true});
+var router = express.Router({ mergeParams: true });
 var fs = require('fs');
 //used for upload purposes
-var multer  = require('multer')
+var multer = require('multer')
 const crypto = require('crypto')
 var uploadFolder = __dirname + '/../uploads/';
 ///
 const Resource = require('../controllers/resource')
 const User = require('../controllers/user')
 const Post = require('../controllers/post');
-const e = require('express');
 const Comment = require('../controllers/comment')
+const Category = require('../controllers/category')
 
 let categories = ['book', 'article', 'application', 'report', 'studentwork', 'monographs'];
 
 //middleware require login
 var requireLogin = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        if(req.method=="GET")
+        if (req.method == "GET")
             req.session.returnTo = req.originalUrl
         req.flash('error', 'You must be login first!')
         return res.redirect('/login')
@@ -47,30 +47,30 @@ var isPostAuthor = async (req, res, next) => {
 //upload middleware
 function endsWithAny(suffixes, string) {
     for (let suffix of suffixes) {
-        if(string.endsWith(suffix))
+        if (string.endsWith(suffix))
             return true;
     }
     return false;
 }
 
-var upload = multer({ 
+var upload = multer({
     dest: 'uploads/',
-    limits:{
-        fileSize:10000000,
+    limits: {
+        fileSize: 10000000,
     },
     fileFilter: (req, file, cb) => {
         console.log(file.originalname)
-           if(!endsWithAny(['.TXT','.PNG','.JPG','.PDF','.txt','.png','.jpg','.pdf'], file.originalname)){
-                console.log('Nope')
-                cb(new Error('File Format is incorrect'));
-           }
-           else{
-                cb(undefined, true);
-           }
+        if (!endsWithAny(['.TXT', '.PNG', '.JPG', '.PDF', '.txt', '.png', '.jpg', '.pdf'], file.originalname)) {
+            console.log('Nope')
+            cb(new Error('File Format is incorrect'));
+        }
+        else {
+            cb(undefined, true);
+        }
     },
     filename: (req, file, cb) => {
         let customFileName = crypto.randomBytes(18).toString('hex'),
-        fileExtension = file.originalname.split('.')[1] // get file extension from original file name
+            fileExtension = file.originalname.split('.')[1] // get file extension from original file name
         cb(null, customFileName + '.' + fileExtension)
     },
 
@@ -104,22 +104,22 @@ router.get('/:id/edit', requireLogin, isAuthor, (req, res) => {
         .catch(err => res.render('error', { error: err }))
 })
 
-router.get('/download/:filename', (req, res)=>{
+router.get('/download/:filename', (req, res) => {
     // console.log( 'req : ')
     // console.log( req)
     try {
         Resource.findRecord(req.params.filename)
-            .then(data =>{
+            .then(data => {
                 let fileName = data.originalname,
                     filePath = uploadFolder + req.params.filename
                 res.download(filePath, fileName);
             })
     }
-    catch(err){
+    catch (err) {
         console.log(err)
         console.log(req.params)
     }
-    
+
 })
 
 // router.post('/upload', upload.single('upload'), async(req, res)=>{
@@ -147,6 +147,21 @@ router.post('/', requireLogin, upload.single('file'), async (req, res) => {
             //res.send(file);
             req.flash('success', 'Successfully created a new resource')
             res.redirect(`/resource/${data._id}`)
+        })
+        .catch(err => res.render('error', { error: err }))
+})
+
+router.post('/category/new', async (req, res) => {
+    const { category } = req.body
+    
+    Category.getCategories()
+        .then(data => {
+            data[0].categories.push(category)
+            data[0].save()
+                .then(()=>{
+                    req.flash('success', 'Successfully added new category')
+                    res.redirect('/resource')
+                })
         })
         .catch(err => res.render('error', { error: err }))
 })
@@ -190,7 +205,7 @@ router.post('/:id/post', requireLogin, (req, res) => {
         .catch(err => res.render('error', { error: err }))
 })
 
-router.post('/:id/rating',requireLogin, (req, res) => {
+router.post('/:id/rating', requireLogin, (req, res) => {
     const { id } = req.params;
     const rating = parseInt(req.body.rating)
     Resource.addRating(id, rating)

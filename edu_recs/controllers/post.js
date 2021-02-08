@@ -29,3 +29,11 @@ module.exports.deleteCommentFromPost = (id, commentId) => {
         .findByIdAndUpdate(id, { $pull: { comments: commentId } })
         .exec()
 }
+
+module.exports.deleteAllFromUser = (userId) => {
+    return Post.find({'user': userId}).exec((err,posts)=>{
+        posts.forEach((post)=>{
+            Post.findByIdAndDelete(post._id).exec()
+        })
+    })
+}

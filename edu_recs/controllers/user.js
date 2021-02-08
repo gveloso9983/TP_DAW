@@ -46,3 +46,9 @@ module.exports.findAndUpdate = (id, profile) => {
         .findByIdAndUpdate(id, profile, { runValidators: true, new: true })
         .exec()
 }
+
+module.exports.delete = id =>{
+    return User
+        .findByIdAndDelete(id)
+        .exec()
+}

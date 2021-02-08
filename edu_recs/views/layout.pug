@@ -13,7 +13,8 @@ html
           i.fa.fa-home.fa-lg
         div(class="navbar")
           .navbar-nav 
-            a.nav-link(href='/user') USERS    
+            if (admin)
+              a.nav-link(href='/user') USERS    
             a.nav-link(href='/resource') RESOURCES
         div(class="navbar")
           .navbar-nav.ml-auto
@@ -23,6 +24,8 @@ html
               a.nav-link.active(href='/login') LOGIN 
                 i.fa.fa-sign-in 
             else
+              a.nav-link(href='/myResources') MY RESOURCES 
+                i.fa.fa-book
               a.nav-link(href='/profile') MY PROFILE 
                 i.fa.fa-user
               a.nav-link(href='/logout') LOGOUT 

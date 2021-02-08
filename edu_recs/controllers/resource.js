@@ -93,3 +93,15 @@ module.exports.addRating = (id, rating) =>{
     .updateOne({"_id" : id}, {$inc : {'rateCount' : 1, 'rateValue' : rating}})
     .exec()
 }
+
+module.exports.deleteAllFromUser = (userId) => {
+    return Resource.find({'user': userId}).exec((err,resources)=>{
+        resources.forEach((resource)=>{
+            Resource.findByIdAndDelete(resource._id).exec()
+        })
+    })
+}
+
+module.exports.allFromUser = (userId) => {
+    return Resource.find({'user': userId}).exec()
+}

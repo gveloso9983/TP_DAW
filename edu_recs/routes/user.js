@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 var User = require('../controllers/user')
+const Resource = require('../controllers/resource')
+const Post = require('../controllers/post');
+const Comment = require('../controllers/comment')
 
 //middleware require login
 var requireLogin = (req, res, next) => {
@@ -47,5 +50,18 @@ router.put('/:id', requireLogin, (req, res) => {
       })
       .catch(err => res.render('error', { error: err }))
 })
+
+
+router.delete('/:id', requireLogin, async (req, res) => {
+  const { id } = req.params
+  await Resource.deleteAllFromUser(id)
+  await Post.deleteAllFromUser(id)
+  await Comment.deleteAllFromUser(id)
+  await User.delete(id)
+
+  req.flash('success', 'Successfully deleted acount')
+  res.redirect(`/`)
+})
+
 
 module.exports = router;
