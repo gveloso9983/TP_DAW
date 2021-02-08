@@ -40,8 +40,8 @@ router.get('/user', verifyAdmin, function (req, res) {
 /* GET home page. */
 router.get('/', (req, res) => {
   Resource.list()
-    .then(data => res.render('index', { resources: data, categories, category: 'all' }, console.log('Data: ' + data)))
-    .catch(err => res.render('error', { error: err }))
+      .then(data => res.render('index', { resources: data.sort( (a,b) => b.creationDate - a.creationDate), categories, category: 'all' }, console.log('Data: ' + data)))
+      .catch(err => res.render('error', { error: err }))
 })
 
 router.get('/login', (req, res) => {
