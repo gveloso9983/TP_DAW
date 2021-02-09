@@ -53,10 +53,12 @@ function endsWithAny(suffixes, string) {
     return false;
 }
 
+var maxSize = 1 * 1000 * 1000 * 1000;
+
 var upload = multer({
     dest: 'uploads/',
     limits: {
-        fileSize: 10000000,
+        fileSize: maxSize,
     },
     fileFilter: (req, file, cb) => {
         console.log(file.originalname)

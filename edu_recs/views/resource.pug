@@ -58,8 +58,9 @@ block content
                   i.fa.fa-edit  Edit 
                 form.d-inline(method='POST', action='/resource/'+ resource._id +'?_method=DELETE')
                   input.btn.w3-btn.w3-teal.w3-margin(type='submit', value='Delete')
+            -if(currentUser)  
                 a.btn.w3-btn.w3-teal.d-inline(class='button' href='/resource/download/'+ resource.filename) 
-                  i.fa.fa-download  Download    
+                  i.fa.fa-download  Download  
       -if(currentUser)
         .w3-card-4.w3-container.mb-3
           h4.w3-left.w3-text-teal Leave a rating
