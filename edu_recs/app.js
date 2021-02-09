@@ -53,7 +53,7 @@ app.use(session({
   secret: 'notagoodsecret',
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: false, maxAge: 60000 }
+  cookie: { secure: false, maxAge: 6000000 }
 }))
 app.use(flash());
 app.use(methodOverride('_method'))
